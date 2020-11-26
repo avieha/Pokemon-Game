@@ -1,64 +1,125 @@
 package api;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class DWGraph_DS implements directed_weighted_graph {
-
+       private HashMap<Integer,node_data>_nodesList;
+       private HashMap<Integer,HashMap<Integer,edge_data>>_out;
+       private HashMap<Integer, HashMap<Integer,node_data>>_in;
+       private int _nodeSize;
+       private int _edgeSize;
+       private int _MC;
+       DWGraph_DS(){
+           _nodesList=new HashMap<>();
+           _in=new HashMap<>();
+           _in=new HashMap<>();
+           _edgeSize=0;
+           _nodeSize=0;
+           _MC=0;
+       }
 
     @Override
     public node_data getNode(int key) {
-        return null;
+        if(!_nodesList.containsKey(key))
+            return  null;
+        return _nodesList.get(key);
     }
 
     @Override
     public edge_data getEdge(int src, int dest) {
-        return null;
+           if(src==dest||getNode(src)==null||getNode(dest)==null)
+               return null;
+           if(!_out.containsKey(src))
+               return null;
+           return _out.get(src).get(dest);
     }
 
     @Override
     public void addNode(node_data n) {
+           if(n==null)
+               return;
+         HashMap<Integer,node_data> in=new HashMap<>();
+         HashMap<Integer,edge_data> out=new HashMap<>();
+           _in.put(n.getKey(),in);
+           _out.put(n.getKey(),out);
+           _nodesList.put(n.getKey(),n);
+           _nodeSize++;
+           _MC++;
+
 
     }
 
     @Override
     public void connect(int src, int dest, double w) {
+           if(getNode(src)==null||getNode(dest)==null||src==dest)
+               return;
+           if(getEdge(src, dest)!=null)
+               if(getEdge(src, dest).getWeight()==w)
+                   return;
 
+           edge_data e=new EdgeData(src,dest,w);
+           _out.get(src).put(dest,e);
+           _in.get(dest).put(src,getNode(src));
+           _edgeSize++;
+           _MC++;
     }
 
     @Override
     public Collection<node_data> getV() {
-        return null;
+           Collection<node_data>vertices=_nodesList.values();
+        return vertices;
     }
 
     @Override
     public Collection<edge_data> getE(int node_id) {
-        return null;
+           if(getNode(node_id)==null)
+               return null;
+           Collection<edge_data> edges=_out.get(node_id).values();
+        return edges;
     }
 
     @Override
     public node_data removeNode(int key) {
-        return null;
+           Collection<node_data>inners=_in.get(key).values();
+        for (node_data node_data : inners) {
+            _out.get(node_data.getKey()).remove(key);
+            _edgeSize--;
+            _MC++;
+        }
+        _edgeSize-= _out.size();
+        _MC+=_out.size();
+        _out.remove(key);
+        _nodeSize--;
+        _MC++;
+        return _nodesList.remove(key);
+
     }
 
     @Override
     public edge_data removeEdge(int src, int dest) {
-        return null;
+           if(getEdge(src, dest)==null)
+               return null;
+        _in.get(dest).remove(src);
+        _edgeSize--;
+        return _out.get(src).remove(dest);
     }
 
     @Override
     public int nodeSize() {
-        return 0;
+        return _nodeSize;
     }
 
     @Override
     public int edgeSize() {
-        return 0;
+        return _edgeSize;
     }
 
     @Override
     public int getMC() {
-        return 0;
+        return _MC;
     }
 
     private class NodeData implements node_data{
@@ -146,11 +207,11 @@ public class DWGraph_DS implements directed_weighted_graph {
         }
     }
     private class EdgeData implements edge_data{
-         private node_data _src,_dest;
+         private int _src,_dest;
          private double _weight;
          private String _info;
          private int _tag;
-          EdgeData(node_data src, node_data dest, double w){
+          EdgeData(int src, int dest, double w){
               _dest=dest;
               _src=src;
               _weight=w;
@@ -159,12 +220,12 @@ public class DWGraph_DS implements directed_weighted_graph {
           }
         @Override
         public int getSrc() {
-            return _src.getKey();
+            return _src;
         }
 
         @Override
         public int getDest() {
-            return _dest.getKey();
+            return _dest;
         }
 
         @Override
