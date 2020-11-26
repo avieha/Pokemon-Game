@@ -1,4 +1,4 @@
-package ex2;
+package src;
 
 public class dw_graph_algorithms {
 }

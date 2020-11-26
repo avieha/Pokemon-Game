@@ -1,4 +1,4 @@
-package ex2;
+package src;
 
 public class DWGraph_DS {
 }
