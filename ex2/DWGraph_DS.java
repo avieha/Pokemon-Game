@@ -2,5 +2,5 @@ package ex2;
 
 public class DWGraph_DS {
 
-check
+check number 2
 }
