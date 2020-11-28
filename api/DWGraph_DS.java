@@ -16,7 +16,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     DWGraph_DS() {
         _nodesList = new HashMap<>();
         _in = new HashMap<>();
-        _in = new HashMap<>();
+        _out = new HashMap<>();
         _edgeSize = 0;
         _nodeSize = 0;
         _MC = 0;
@@ -42,10 +42,10 @@ public class DWGraph_DS implements directed_weighted_graph {
     public void addNode(node_data n) {
         if (n == null)
             return;
-        HashMap<Integer, node_data> in = new HashMap<>();
-        HashMap<Integer, edge_data> out = new HashMap<>();
-        _in.put(n.getKey(), in);
-        _out.put(n.getKey(), out);
+       // HashMap<Integer, node_data> in = new HashMap<Integer, node_data>();
+        //HashMap<Integer, edge_data> out = new HashMap<Integer, edge_data>();
+        _in.put(n.getKey(),new HashMap<Integer, node_data>() );
+        _out.put(n.getKey(),new HashMap<Integer, edge_data>());
         _nodesList.put(n.getKey(), n);
         _nodeSize++;
         _MC++;
@@ -287,5 +287,24 @@ public class DWGraph_DS implements directed_weighted_graph {
             return 0;
         }
     }*/
+     public String toString(){
+         Collection<node_data>x=_nodesList.values();
+         for (node_data node_data : x) {
+             System.out.print("{ node: "+node_data.getKey()+" neighboors:[");
+             Collection<edge_data>y=_out.get(node_data.getKey()).values();
+             int size=y.size();
+             if(size==0)
+                 System.out.println(" ] }");
+             else
+             for (edge_data edge_data : y) {
+                 if(size==1)
+                     System.out.println(edge_data.getDest()+" ] }");
+                 else
+                 System.out.print(edge_data.getDest()+",");
+                 size--;
+             }
 
+         }
+         return "";
+     }
 }
