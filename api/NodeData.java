@@ -1,6 +1,6 @@
 package api;
 
-public class NodeData implements node_data{
+public class NodeData implements node_data,java.io.Serializable{
         private int _key;
         private geo_location _location;
         private double _weight;
@@ -67,7 +67,7 @@ public class NodeData implements node_data{
             _tag=t;
         }
 
-    private class GeoLocation implements geo_location {
+    private class GeoLocation implements geo_location,java.io.Serializable {
         private double _x,_y,_z;
         GeoLocation(){
             _x=0;

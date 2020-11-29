@@ -183,8 +183,7 @@ public class DWGraph_Algo implements dw_graph_algorithms,java.io.Serializable{
 
             // Saving of object in a file
             FileOutputStream File = new FileOutputStream(file);
-            ObjectOutputStream out = new ObjectOutputStream
-                    (File);
+            ObjectOutputStream out = new ObjectOutputStream(File);
 
             // Method for serialization of object
             out.writeObject(_graph);
