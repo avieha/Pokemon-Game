@@ -1,8 +1,9 @@
 package api;
 
+import java.io.*;
 import java.util.*;
 
-public class DWGraph_Algo implements dw_graph_algorithms{
+public class DWGraph_Algo implements dw_graph_algorithms,java.io.Serializable{
     private directed_weighted_graph _graph;
 
     @Override
@@ -178,12 +179,53 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
     @Override
     public boolean save(String file) {
-        return false;
+        try {
+
+            // Saving of object in a file
+            FileOutputStream File = new FileOutputStream(file);
+            ObjectOutputStream out = new ObjectOutputStream
+                    (File);
+
+            // Method for serialization of object
+            out.writeObject(_graph);
+
+            out.close();
+            File.close();
+            return true;
+        }
+
+        catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public boolean load(String file) {
-        return false;
+        try {
+
+            // Reading the object from a file
+            FileInputStream File = new FileInputStream
+                    (file);
+            ObjectInputStream in = new ObjectInputStream(File);
+
+            // Method for deserialization of object
+            this._graph = (directed_weighted_graph)in.readObject();
+
+            in.close();
+            File.close();
+            return true;
+
+            // System.out.println("z = " + object1.z);
+        }
+
+        catch (IOException ex) {
+            return false;
+        }
+
+        catch (ClassNotFoundException ex) {
+            return false;
+        }
     }
 
     private static class vertex{
