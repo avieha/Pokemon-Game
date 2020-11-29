@@ -1,11 +1,8 @@
 package api;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
-public class DWGraph_Algo implements dw_graph_algorithms {
+public class DWGraph_Algo implements dw_graph_algorithms{
     private directed_weighted_graph _graph;
 
     @Override
@@ -75,12 +72,108 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     @Override
     public double shortestPathDist(int src, int dest) {
-        return 0;
+        if(this._graph==null)
+            return -1;
+        if(this._graph.getNode(src)==null||this._graph.getNode(dest)==null)
+            return -1;
+        if(src==dest)
+            return 0;
+        PriorityQueue<vertex> q =new PriorityQueue(this._graph.nodeSize(), new Comparator<vertex>() {
+            @Override
+            public int compare(vertex o1, vertex o2) {
+                if(o1._edgeweight> o2._edgeweight)
+                    return 1;
+                if(o1._edgeweight<o2._edgeweight)
+                    return -1;
+                return 0;
+            }
+        });
+        Collection<node_data> list= _graph.getV();
+        for (node_data node_info : list) {
+            node_info.setTag(0);
+        }
+        vertex ver=new vertex(_graph.getNode(src));
+        HashMap<Integer,vertex> verlist=ver.vertohash(_graph.getV());
+        verlist.get(src).set_edgeweight(0);
+        q.add(ver);
+        while (!q.isEmpty()){
+            vertex x= verlist.get(q.remove().getkey());
+            _graph.getNode(x.getkey()).setTag(1);
+            Collection<edge_data> neighbors= _graph.getE(x.getkey());
+            for (edge_data neighbor : neighbors) {
+                if(_graph.getNode(neighbor.getDest()).getTag()==0)
+                {
+                    double weightsum=x._edgeweight+_graph.getEdge(x.getkey(),neighbor.getDest()).getWeight();
+                    if(weightsum<verlist.get(neighbor.getDest())._edgeweight){
+                        verlist.get(neighbor.getDest()).set_edgeweight(weightsum);
+                       // PrevNode.put(neighbor,x);
+                        verlist.get(neighbor.getDest()).setPrevnode(x.getkey());
+                        q.add(verlist.get(neighbor.getDest()));
+                    }
+
+                }
+            }
+        }      if(_graph.getNode(dest).getTag()==0)
+            return -1;
+        return verlist.get(dest)._edgeweight;
+
+
     }
 
     @Override
     public List<node_data> shortestPath(int src, int dest) {
-        return null;
+        List<node_data> pathlist=new LinkedList<node_data>();
+        if(this._graph==null)
+            return null;
+        if(this._graph.getNode(src)==null||this._graph.getNode(dest)==null)
+            return null;
+        if(src==dest){
+            pathlist.add(_graph.getNode(src));
+            return pathlist;}
+        if(shortestPathDist(src,dest)==-1)
+            return null;
+        PriorityQueue<vertex> q =new PriorityQueue(this._graph.nodeSize(), new Comparator<vertex>() {
+            @Override
+            public int compare(vertex o1, vertex o2) {
+                if(o1._edgeweight> o2._edgeweight)
+                    return 1;
+                if(o1._edgeweight<o2._edgeweight)
+                    return -1;
+                return 0;
+            }
+        });
+        Collection<node_data> list= _graph.getV();
+        for (node_data node_info : list) {
+            node_info.setTag(0);
+        }
+        vertex ver=new vertex(_graph.getNode(src));
+        HashMap<Integer,vertex> verlist=ver.vertohash(_graph.getV());
+        verlist.get(src).set_edgeweight(0);
+        q.add(ver);
+        while (!q.isEmpty()){
+            vertex x= verlist.get(q.remove().getkey());
+            _graph.getNode(x.getkey()).setTag(1);
+            Collection<edge_data> neighbors= _graph.getE(x.getkey());
+            for (edge_data neighbor : neighbors) {
+                if(_graph.getNode(neighbor.getDest()).getTag()==0)
+                {
+                    double weightsum=x._edgeweight+_graph.getEdge(x.getkey(),neighbor.getDest()).getWeight();
+                    if(weightsum<verlist.get(neighbor.getDest())._edgeweight){
+                        verlist.get(neighbor.getDest()).set_edgeweight(weightsum);
+                        verlist.get(neighbor.getDest()).setPrevnode(x.getkey());
+                        q.add(verlist.get(neighbor.getDest()));
+                    }
+
+                }
+            }
+        } int temp=dest;
+        pathlist.add(_graph.getNode(dest));
+        while(temp!=src){
+            pathlist.add(_graph.getNode(verlist.get(temp).prevnode));
+            temp=verlist.get(temp).prevnode;
+        }
+        Collections.reverse(pathlist);
+        return pathlist;
     }
 
     @Override
@@ -91,5 +184,36 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     @Override
     public boolean load(String file) {
         return false;
+    }
+
+    private static class vertex{
+        node_data _node;
+        double _edgeweight;
+        int prevnode;
+        vertex(node_data node){
+            _node=node;
+            _edgeweight=Integer.MAX_VALUE;
+            prevnode=-1;
+        }
+        public int getkey(){
+            return _node.getKey();
+        }
+        public void set_edgeweight(double w){
+            _edgeweight=w;
+        }
+
+        public void setPrevnode(int prevnode) {
+            this.prevnode = prevnode;
+        }
+
+        public HashMap<Integer,vertex> vertohash(Collection<node_data> t){
+            HashMap<Integer,vertex> list=new HashMap<>();
+            for (node_data node_data : t) {
+                vertex ver=new vertex(node_data);
+                list.put(ver.getkey(),ver);
+            }
+            return list;
+        }
+
     }
 }
