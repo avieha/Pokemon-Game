@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class DWGraph_DS implements directed_weighted_graph {
+public class DWGraph_DS implements directed_weighted_graph,java.io.Serializable {
     private HashMap<Integer, node_data> _nodesList;
     private HashMap<Integer, HashMap<Integer, edge_data>> _out;
     private HashMap<Integer, HashMap<Integer, node_data>> _in;
@@ -221,7 +221,7 @@ public class DWGraph_DS implements directed_weighted_graph {
             }
         }*/
 
-    private class EdgeData implements edge_data {
+    private class EdgeData implements edge_data ,java.io.Serializable {
         private int _src, _dest;
         private double _weight;
         private String _info;
