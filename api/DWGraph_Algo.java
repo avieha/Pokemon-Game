@@ -45,12 +45,24 @@ public class DWGraph_Algo implements dw_graph_algorithms,java.io.Serializable{
             return true;
 
         Collection<node_data>t= this._graph.getV();
-        for (node_data recentNode : t) {
+        directed_weighted_graph reverseGraph=new DWGraph_DS();
+        for (node_data node_data : t) {
+            reverseGraph.addNode(node_data);
+        }
+        for (node_data node_data : t) {
+            Collection<edge_data>n= this._graph.getE(node_data.getKey());
+            for (edge_data edge_data : n) {
+                reverseGraph.connect(edge_data.getDest(),edge_data.getSrc(),edge_data.getWeight());
+            }
+        }
+        int secondTime=0;
             Collection<node_data>secondt= this._graph.getV();
             for (node_data x : secondt) {
                 this._graph.getNode(x.getKey()).setTag(0);
             }
-
+             Iterator<node_data> itr= t.iterator();
+            node_data recentNode = itr.next();
+            secondTime=recentNode.getKey();
             Queue<node_data> q=new LinkedList<node_data>();
             q.add(recentNode);
             q.peek().setTag(1);
@@ -62,7 +74,6 @@ public class DWGraph_Algo implements dw_graph_algorithms,java.io.Serializable{
                         _graph.getNode(edge.getDest()).setTag(1);
                         q.add(_graph.getNode(edge.getDest()));
                     }
-
                 }
             }
             Collection<node_data> y = this._graph.getV();
@@ -70,7 +81,29 @@ public class DWGraph_Algo implements dw_graph_algorithms,java.io.Serializable{
                 if (node2.getTag() == 0)
                     return false;
             }
+        Collection<node_data>reversenodes= reverseGraph.getV();
+        for (node_data x : secondt) {
+            reverseGraph.getNode(x.getKey()).setTag(0);
         }
+            recentNode=reverseGraph.getNode(secondTime);
+        q.add(recentNode);
+        q.peek().setTag(1);
+        while (!q.isEmpty()) {
+            Collection<edge_data>edges = reverseGraph.getE(q.peek().getKey());
+            q.remove();
+            for (edge_data edge : edges) {
+                if (reverseGraph.getNode(edge.getDest()).getTag() == 0) {
+                    reverseGraph.getNode(edge.getDest()).setTag(1);
+                    q.add(reverseGraph.getNode(edge.getDest()));
+                }
+            }
+        }
+        Collection<node_data> secy = reverseGraph.getV();
+        for (node_data node2 : secy) {
+            if (node2.getTag() == 0)
+                return false;
+        }
+
         return true;
     }
 
