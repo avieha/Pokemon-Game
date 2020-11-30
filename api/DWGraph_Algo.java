@@ -1,5 +1,8 @@
 package api;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.*;
 import java.util.*;
 
@@ -179,21 +182,20 @@ public class DWGraph_Algo implements dw_graph_algorithms,java.io.Serializable{
 
     @Override
     public boolean save(String file) {
-        try {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(_graph);
+        //System.out.println(json);
 
-            // Saving of object in a file
-            FileOutputStream File = new FileOutputStream(file);
-            ObjectOutputStream out = new ObjectOutputStream(File);
-
-            // Method for serialization of object
-            out.writeObject(_graph);
-
-            out.close();
-            File.close();
+        //Write JSON to file
+        try
+        {
+            PrintWriter pw = new PrintWriter(new File(file));
+            pw.write(json);
+            pw.close();
             return true;
         }
-
-        catch (IOException e) {
+        catch (FileNotFoundException e)
+        {
             e.printStackTrace();
             return false;
         }
@@ -201,28 +203,18 @@ public class DWGraph_Algo implements dw_graph_algorithms,java.io.Serializable{
 
     @Override
     public boolean load(String file) {
-        try {
+        try
+        {
+            GsonBuilder builder = new GsonBuilder();
+            builder.registerTypeAdapter(directed_weighted_graph.class, new Graph_Load());
+            Gson gson = builder.create();
 
-            // Reading the object from a file
-            FileInputStream File = new FileInputStream
-                    (file);
-            ObjectInputStream in = new ObjectInputStream(File);
-
-            // Method for deserialization of object
-            this._graph = (directed_weighted_graph)in.readObject();
-
-            in.close();
-            File.close();
+            FileReader reader = new FileReader(file);
+            this._graph = gson.fromJson(reader, directed_weighted_graph.class);
             return true;
-
-            // System.out.println("z = " + object1.z);
         }
-
-        catch (IOException ex) {
-            return false;
-        }
-
-        catch (ClassNotFoundException ex) {
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
             return false;
         }
     }

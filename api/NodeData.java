@@ -6,20 +6,22 @@ public class NodeData implements node_data,java.io.Serializable{
         private double _weight;
         private String _info;
         private int _tag;
-        NodeData(int key){
-            _key=key;
+        private static int index=0;
+    NodeData(int key){
+        _key=key;
+        _weight=0;
+        _tag=0;
+        _info="";
+        _location=new GeoLocation();
+    }
+        NodeData(){
+            _key=index++;
             _weight=0;
             _tag=0;
             _info="";
             _location=new GeoLocation();
         }
-//        NodeData(int key,geo_location location,double w,String info,int tag){
-//            _key=key;
-//            _location=new GeoLocation(location.x(), location.y(), location.z());
-//            _weight=w;
-//            _tag=tag;
-//            _weight=w;
-//        }
+
         @Override
         public int getKey() {
             return _key;
@@ -67,7 +69,7 @@ public class NodeData implements node_data,java.io.Serializable{
             _tag=t;
         }
 
-    private class GeoLocation implements geo_location,java.io.Serializable {
+    public static class GeoLocation implements geo_location,java.io.Serializable {
         private double _x,_y,_z;
         GeoLocation(){
             _x=0;
