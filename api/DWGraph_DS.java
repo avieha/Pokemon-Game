@@ -42,10 +42,10 @@ public class DWGraph_DS implements directed_weighted_graph {
     public void addNode(node_data n) {
         if (n == null)
             return;
-       // HashMap<Integer, node_data> in = new HashMap<Integer, node_data>();
+        // HashMap<Integer, node_data> in = new HashMap<Integer, node_data>();
         //HashMap<Integer, edge_data> out = new HashMap<Integer, edge_data>();
-        _in.put(n.getKey(),new HashMap<Integer, node_data>() );
-        _out.put(n.getKey(),new HashMap<Integer, edge_data>());
+        _in.put(n.getKey(), new HashMap<Integer, node_data>());
+        _out.put(n.getKey(), new HashMap<Integer, edge_data>());
         _nodesList.put(n.getKey(), n);
         _nodeSize++;
         _MC++;
@@ -57,10 +57,9 @@ public class DWGraph_DS implements directed_weighted_graph {
     public void connect(int src, int dest, double w) {
         if (getNode(src) == null || getNode(dest) == null || src == dest)
             return;
-        if (getEdge(src, dest) != null)
+        if (getEdge(src, dest) != null){
             if (getEdge(src, dest).getWeight() == w)
                 return;
-
         edge_data e = new EdgeData(src, dest, w);
         _out.get(src).put(dest, e);
         _in.get(dest).put(src, getNode(src));
@@ -222,6 +221,7 @@ public class DWGraph_DS implements directed_weighted_graph {
         }*/
 
     private class EdgeData implements edge_data {
+
         private int _src, _dest;
         private double _weight;
         private String _info;
@@ -270,41 +270,42 @@ public class DWGraph_DS implements directed_weighted_graph {
             _tag = t;
         }
     }
-  /*  private class EdgeLocation implements edge_location{
-           private edge_data _edgeloc;
-           private double _ratio;
-           EdgeLocation(edge_data e){
-               _edgeloc=e;
-               _ratio=e
-           }
-        @Override
-        public edge_data getEdge() {
-            return null;
-        }
 
-        @Override
-        public double getRatio() {
-            return 0;
-        }
-    }*/
-     public String toString(){
-         Collection<node_data>x=_nodesList.values();
-         for (node_data node_data : x) {
-             System.out.print("{ node: "+node_data.getKey()+" neighboors:[");
-             Collection<edge_data>y=_out.get(node_data.getKey()).values();
-             int size=y.size();
-             if(size==0)
-                 System.out.println(" ] }");
-             else
-             for (edge_data edge_data : y) {
-                 if(size==1)
-                     System.out.println(edge_data.getDest()+" ] }");
-                 else
-                 System.out.print(edge_data.getDest()+",");
-                 size--;
+    /*  private class EdgeLocation implements edge_location{
+             private edge_data _edgeloc;
+             private double _ratio;
+             EdgeLocation(edge_data e){
+                 _edgeloc=e;
+                 _ratio=e
              }
+          @Override
+          public edge_data getEdge() {
+              return null;
+          }
 
-         }
-         return "";
-     }
+          @Override
+          public double getRatio() {
+              return 0;
+          }
+      }*/
+    public String toString() {
+        Collection<node_data> x = _nodesList.values();
+        for (node_data node_data : x) {
+            System.out.print("{ node: " + node_data.getKey() + " neighboors:[");
+            Collection<edge_data> y = _out.get(node_data.getKey()).values();
+            int size = y.size();
+            if (size == 0)
+                System.out.println(" ] }");
+            else
+                for (edge_data edge_data : y) {
+                    if (size == 1)
+                        System.out.println(edge_data.getDest() + " ] }");
+                    else
+                        System.out.print(edge_data.getDest() + ",");
+                    size--;
+                }
+
+        }
+        return "";
+    }
 }
