@@ -101,6 +101,11 @@ public class NodeData implements node_data,java.io.Serializable{
         public double distance(geo_location g) {
             return Math.sqrt((_x*_x)+(_z*_z)+(_y*_y));
         }
+
+        @Override
+        public String toString(){
+            return _x+","+_y+","+_z;
+        }
     }
 
 
