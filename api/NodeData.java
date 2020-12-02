@@ -1,5 +1,7 @@
 package api;
 
+import java.util.Objects;
+
 public class NodeData implements node_data,java.io.Serializable{
         private int _key;
         private geo_location _location;
@@ -7,7 +9,7 @@ public class NodeData implements node_data,java.io.Serializable{
         private String _info;
         private int _tag;
         private static int index=0;
-    NodeData(int key){
+    public NodeData(int key){
         _key=key;
         _weight=0;
         _tag=0;
@@ -101,7 +103,27 @@ public class NodeData implements node_data,java.io.Serializable{
         public double distance(geo_location g) {
             return Math.sqrt((_x*_x)+(_z*_z)+(_y*_y));
         }
-    }
 
+        @Override
+        public String toString(){
+            return _x+","+_y+","+_z;
+        }
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NodeData nodeInfo = (NodeData) o;
+        return _key == nodeInfo._key &&
+                Integer.compare(nodeInfo._tag, _tag) == 0 &&
+                Objects.equals(_info, nodeInfo._info)&&
+                _location.x()==nodeInfo._location.x() &&
+                _location.y()==nodeInfo._location.y() &&
+                _location.z()==nodeInfo._location.z();
+    }
+    @Override
+    public String toString(){
+        return ""+_key+"";
+    }
 
 }
