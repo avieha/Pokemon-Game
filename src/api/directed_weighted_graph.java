@@ -1,4 +1,4 @@
-package _ex2.api;
+package api;
 
 
 import java.util.Collection;

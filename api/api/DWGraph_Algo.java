@@ -1,6 +1,13 @@
 package api;
 
 import com.google.gson.Gson;
+<<<<<<< HEAD:api/api/DWGraph_Algo.java
+=======
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+>>>>>>> 34c7d66b1bb0b483aca905324027d1ca30c041c6:api/DWGraph_Algo.java
 import java.io.*;
 import java.util.*;
 
@@ -53,6 +60,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             for (edge_data edge_data : n) {
                 reverseGraph.connect(edge_data.getDest(),edge_data.getSrc(),edge_data.getWeight());
             }
+
         }
         int secondTime=0;
             Collection<node_data>secondt= this._graph.getV();
@@ -214,9 +222,35 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
     @Override
     public boolean save(String file) {
+<<<<<<< HEAD:api/api/DWGraph_Algo.java
         Gson gson = new Gson();
         String json = gson.toJson(_graph);
         //System.out.println(json);
+=======
+        Gson gson = new GsonBuilder().create();
+        JsonObject graph=new JsonObject();
+        JsonArray graphNodes=new JsonArray();
+        JsonArray neigh=new JsonArray();
+        Collection<node_data>t= _graph.getV();
+        for (node_data node_data : t) {
+           Collection<edge_data>edgecolec=_graph.getE(node_data.getKey());
+            for (edge_data edge_data : edgecolec) {
+                JsonObject Edges=new JsonObject();
+                Edges.addProperty("src",edge_data.getSrc());
+                Edges.addProperty("w",edge_data.getWeight());
+                Edges.addProperty("dest",edge_data.getDest());
+                neigh.add(Edges);
+            }
+            JsonObject nodesList=new JsonObject();
+            geo_location geo=node_data.getLocation();
+            nodesList.addProperty("pos",geo.toString() );
+            nodesList.addProperty("id",  node_data.getKey());
+            graphNodes.add(nodesList);
+        }
+        graph.add("Edges",neigh);
+        graph.add("Nodes",graphNodes);
+        String json = gson.toJson(graph);
+>>>>>>> 34c7d66b1bb0b483aca905324027d1ca30c041c6:api/DWGraph_Algo.java
         //Write JSON to file
         try
         {
