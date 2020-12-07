@@ -1,4 +1,6 @@
-package api;
+package _ex2.api;
+
+
 import java.util.Collection;
 /**
  * This interface represents a directional weighted graph.

@@ -1,12 +1,12 @@
 package api;
 
-public class NodeData implements node_data {
-
+public class NodeData implements node_data, java.io.Serializable {
     private int _key;
     private geo_location _location;
     private double _weight;
     private String _info;
     private int _tag;
+    private static int index = 0;
 
     NodeData(int key) {
         _key = key;
@@ -16,13 +16,14 @@ public class NodeData implements node_data {
         _location = new GeoLocation();
     }
 
-    //        NodeData(int key,geo_location location,double w,String info,int tag){
-//            _key=key;
-//            _location=new GeoLocation(location.x(), location.y(), location.z());
-//            _weight=w;
-//            _tag=tag;
-//            _weight=w;
-//        }
+    NodeData() {
+        _key = index++;
+        _weight = 0;
+        _tag = 0;
+        _info = "";
+        _location = new GeoLocation();
+    }
+
     @Override
     public int getKey() {
         return _key;
@@ -70,6 +71,7 @@ public class NodeData implements node_data {
         _tag = t;
     }
 
+
     private class GeoLocation implements geo_location {
 
         private double _x, _y, _z;
@@ -106,6 +108,4 @@ public class NodeData implements node_data {
             return Math.sqrt((_x * _x) + (_z * _z) + (_y * _y));
         }
     }
-
-
 }
