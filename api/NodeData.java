@@ -71,7 +71,7 @@ public class NodeData implements node_data,java.io.Serializable{
             _tag=t;
         }
 
-    public static class GeoLocation implements geo_location,java.io.Serializable {
+    public static class GeoLocation implements geo_location {
         private double _x,_y,_z;
         GeoLocation(){
             _x=0;
