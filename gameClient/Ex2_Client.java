@@ -1,16 +1,11 @@
 package gameClient;
 
 import Server.Game_Server_Ex2;
-import api.directed_weighted_graph;
-import api.edge_data;
-import api.game_service;
+import api.*;
+import gameClient.util.Point3D;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Ex2_Client implements Runnable{
     private static MyFrame _win;
@@ -22,7 +17,7 @@ public class Ex2_Client implements Runnable{
 
     @Override
     public void run() {
-        int scenario_num = 11;
+        int scenario_num = 1;
         game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
         //	int id = 999;
         //	game.login(id);
@@ -30,12 +25,10 @@ public class Ex2_Client implements Runnable{
         String pks = game.getPokemons();
         directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
         init(game);
-
         game.startGame();
         _win.setTitle("Ex2 - OOP: (NONE trivial Solution) "+game.toString());
         int ind=0;
         long dt=100;
-
         while(game.isRunning()) {
             moveAgants(game, gg);
             try {
@@ -88,8 +81,26 @@ public class Ex2_Client implements Runnable{
      */
     private static int nextNode(directed_weighted_graph g, int src) {
         int ans = -1;
+        double temp=Integer.MAX_VALUE;
+        int dest=-1;
         Collection<edge_data> ee = g.getE(src);
         Iterator<edge_data> itr = ee.iterator();
+        dw_graph_algorithms algo=new DWGraph_Algo();
+        algo.init(g);
+//        Collection<CL_Pokemon>pok= _ar.getPokemons();
+//        for (CL_Pokemon cl_pokemon : pok) {
+//            edge_data edge= cl_pokemon.get_edge();
+//            double sum=algo.shortestPathDist(src,cl_pokemon.get_edge().getDest());
+//            if(sum<temp){
+//                temp=sum;
+//            dest=cl_pokemon.get_edge().getDest();
+//            }
+//        }
+//        List<node_data>list=algo.shortestPath(src,dest);
+//        Iterator<node_data> itr2 = list.iterator();
+//        itr2.next();
+//        ans=itr2.next().getKey();
+
         int s = ee.size();
         int r = (int)(Math.random()*s);
         int i=0;
@@ -112,6 +123,7 @@ public class Ex2_Client implements Runnable{
 
         _win.show();
         String info = game.toString();
+
         JSONObject line;
         try {
             line = new JSONObject(info);
@@ -121,6 +133,9 @@ public class Ex2_Client implements Runnable{
             System.out.println(game.getPokemons());
             int src_node = 0;  // arbitrary node, you should start at one of the pokemon
             ArrayList<CL_Pokemon> cl_fs = Arena.json2Pokemons(game.getPokemons());
+            for (CL_Pokemon cl_f : cl_fs) {
+            }
+
             for(int a = 0;a<cl_fs.size();a++) { Arena.updateEdge(cl_fs.get(a),gg);}
             for(int a = 0;a<rs;a++) {
                 int ind = a%cl_fs.size();
@@ -133,4 +148,5 @@ public class Ex2_Client implements Runnable{
         }
         catch (JSONException e) {e.printStackTrace();}
     }
+
 }
