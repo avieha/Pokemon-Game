@@ -30,7 +30,6 @@ public class SimpleGameClient {
         System.out.println(g);
         System.out.println(game.getPokemons());
         int src_node = 0;  // arbitrary node, you should start at one of the fruits
-        MyFrame frame=new MyFrame(game.getGraph());
         game.addAgent(src_node);
         game.startGame();
         int i=0;

@@ -3,12 +3,14 @@ package api;
 import java.util.Objects;
 
 public class NodeData implements node_data,java.io.Serializable{
-        private int _key;
-        private geo_location _location;
-        private double _weight;
-        private String _info;
-        private int _tag;
-        private static int index=0;
+
+    private int _key;
+    private geo_location _location;
+    private double _weight;
+    private String _info;
+    private int _tag;
+    private static int index=0;
+
     public NodeData(int key){
         _key=key;
         _weight=0;
@@ -16,68 +18,71 @@ public class NodeData implements node_data,java.io.Serializable{
         _info="";
         _location=new GeoLocation();
     }
-        NodeData(){
-            _key=index++;
-            _weight=0;
-            _tag=0;
-            _info="";
-            _location=new GeoLocation();
-        }
+    NodeData(){
+        _key=index++;
+        _weight=0;
+        _tag=0;
+        _info="";
+        _location=new GeoLocation();
+    }
 
-        @Override
-        public int getKey() {
-            return _key;
-        }
+    @Override
+    public int getKey() {
+        return _key;
+    }
 
-        @Override
-        public geo_location getLocation() {
-            return _location;
-        }
+    @Override
+    public geo_location getLocation() {
+        return _location;
+    }
 
-        @Override
-        public void setLocation(geo_location p) {
-            geo_location location=new GeoLocation(p.x(),p.y(),p.z());
-            _location=location;
-            return;
-        }
+    @Override
+    public void setLocation(geo_location p) {
+        geo_location location=new GeoLocation(p.x(),p.y(),p.z());
+        _location=location;
+        return;
+    }
 
-        @Override
-        public double getWeight() {
-            return _weight;
-        }
+    @Override
+    public double getWeight() {
+        return _weight;
+    }
 
-        @Override
-        public void setWeight(double w) {
-            _weight=w;
-        }
+    @Override
+    public void setWeight(double w) {
+        _weight=w;
+    }
 
-        @Override
-        public String getInfo() {
-            return _info;
-        }
+    @Override
+    public String getInfo() {
+        return _info;
+    }
 
-        @Override
-        public void setInfo(String s) {
-            _info=s;
-        }
+    @Override
+    public void setInfo(String s) {
+        _info=s;
+    }
 
-        @Override
-        public int getTag() {
-            return _tag;
-        }
+    @Override
+    public int getTag() {
+        return _tag;
+    }
 
-        @Override
-        public void setTag(int t) {
-            _tag=t;
-        }
+    @Override
+    public void setTag(int t) {
+        _tag=t;
+    }
 
     public static class GeoLocation implements geo_location {
+
         private double _x,_y,_z;
+
         GeoLocation(){
             _x=0;
             _y=0;
             _z=0;
         }
+
         GeoLocation(double x, double y, double z){
             _x=x;
             _y=y;
@@ -101,7 +106,7 @@ public class NodeData implements node_data,java.io.Serializable{
 
         @Override
         public double distance(geo_location g) {
-            return Math.sqrt((_x*_x)+(_z*_z)+(_y*_y));
+            return Math.sqrt(Math.pow(_x-g.x(),2) + Math.pow(_y-g.y(),2) + Math.pow(_z-g.z(),2));
         }
 
         @Override
@@ -125,5 +130,4 @@ public class NodeData implements node_data,java.io.Serializable{
     public String toString(){
         return ""+_key+"";
     }
-
 }

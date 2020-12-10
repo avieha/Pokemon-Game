@@ -10,8 +10,6 @@ import gameClient.util.Range2D;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,14 +18,14 @@ import java.util.List;
  * game on a graph - you are welcome to use this class - yet keep in mind
  * that the code is not well written in order to force you improve the
  * code and not to take it "as is".
- *
  */
 public class MyFrame extends JFrame {
+
     private int _ind;
     private Arena _ar;
     private gameClient.util.Range2Range _w2f;
 
-    MyFrame(String a) {
+    public MyFrame(String a) {
         super(a);
         int _ind = 0;
     }
@@ -50,18 +48,18 @@ public class MyFrame extends JFrame {
         int w = this.getWidth();
         int h = this.getHeight();
         g.clearRect(0, 0, w, h);
-        //	updateFrame();
+        updateFrame();
         drawPokemons(g);
         drawGraph(g);
         drawAgants(g);
         drawInfo(g);
+
     }
 
     public void paint(Graphics g) {
         Image buffer_image;
         Graphics buffer_graphics;
         // Create a new "canvas"
-
         buffer_image = createImage(this.getWidth(), this.getHeight());
         buffer_graphics = buffer_image.getGraphics();
 
@@ -79,7 +77,6 @@ public class MyFrame extends JFrame {
         for (int i = 0; i < str.size(); i++) {
             g.drawString(str.get(i) + " dt: " + dt, 100, 60 + i * 20);
         }
-
     }
 
     private void drawGraph(Graphics g) {
@@ -156,46 +153,4 @@ public class MyFrame extends JFrame {
         g.drawLine((int) s0.x(), (int) s0.y(), (int) d0.x(), (int) d0.y());
         //	g.drawString(""+n.getKey(), fp.ix(), fp.iy()-4*r);
     }
-
-//    static class CountdownTimer implements ActionListener {
-//        //final int TOTAL_TIME = 10;
-//        long counter;
-//        javax.swing.Timer refreshTimer;
-//        //Creation of a JTextField
-//        JTextField countdownTimerField;
-//
-//
-//        public CountdownTimer(JTextField f,long time) {
-//            counter=time;
-//            refreshTimer = new javax.swing.Timer(1000, this);
-//            countdownTimerField = f;
-//        }
-//
-//
-//        public void actionPerformed(ActionEvent e) {
-//            counter--;
-//            if (counter >= 0) {
-//                //System.out.println(" ** " + counter);
-//                countdownTimerField.setText(" ** " + counter);
-//            }
-//            if (counter == 0) {
-//                //System.out.println("Blast off! ");
-//                countdownTimerField.setText(" Blast Off!");
-//                stop();
-//            }
-//        }
-//
-//        public void start() {
-//            refreshTimer.start();
-//        }
-//
-//        public void stop() {
-//            refreshTimer.stop();
-//        }
-//
-////        public void reset() {
-////            counter = TOTAL_TIME;
-////        }
-//
-//    }
 }

@@ -2,7 +2,7 @@ package api;
 
 import java.util.*;
 
-public class DWGraph_DS implements directed_weighted_graph,java.io.Serializable {
+public class DWGraph_DS implements directed_weighted_graph {
     private HashMap<Integer, node_data> _nodesList;
     private HashMap<Integer, HashMap<Integer, edge_data>> _out;
     private HashMap<Integer, HashMap<Integer, node_data>> _in;
@@ -39,12 +39,12 @@ public class DWGraph_DS implements directed_weighted_graph,java.io.Serializable 
     public void addNode(node_data n) {
         if (n == null)
             return;
-        if(getNode(n.getKey())!=null)
+        if (getNode(n.getKey()) != null)
             return;
-       // HashMap<Integer, node_data> in = new HashMap<Integer, node_data>();
+        // HashMap<Integer, node_data> in = new HashMap<Integer, node_data>();
         //HashMap<Integer, edge_data> out = new HashMap<Integer, edge_data>();
-        _in.put(n.getKey(),new HashMap<Integer, node_data>() );
-        _out.put(n.getKey(),new HashMap<Integer, edge_data>());
+        _in.put(n.getKey(), new HashMap<Integer, node_data>());
+        _out.put(n.getKey(), new HashMap<Integer, edge_data>());
         _nodesList.put(n.getKey(), n);
         _nodeSize++;
         _MC++;
@@ -54,9 +54,9 @@ public class DWGraph_DS implements directed_weighted_graph,java.io.Serializable 
 
     @Override
     public void connect(int src, int dest, double w) {
-        if (getNode(src) == null || getNode(dest) == null || src == dest||w<0)
+        if (getNode(src) == null || getNode(dest) == null || src == dest || w < 0)
             return;
-        if (getEdge(src, dest) != null){
+        if (getEdge(src, dest) != null) {
             if (getEdge(src, dest).getWeight() == w)
                 return;
             edge_data e = new EdgeData(src, dest, w);
@@ -88,7 +88,7 @@ public class DWGraph_DS implements directed_weighted_graph,java.io.Serializable 
 
     @Override
     public node_data removeNode(int key) {
-        if(!_nodesList.containsKey(key))
+        if (!_nodesList.containsKey(key))
             return null;
         Collection<node_data> inners = _in.get(key).values();
         for (node_data node_data : inners) {
@@ -135,7 +135,7 @@ public class DWGraph_DS implements directed_weighted_graph,java.io.Serializable 
     }
 
 
-    private class EdgeData implements edge_data ,java.io.Serializable {
+    private class EdgeData implements edge_data {
         private int _src, _dest;
         private double _weight;
         private String _info;
@@ -185,23 +185,25 @@ public class DWGraph_DS implements directed_weighted_graph,java.io.Serializable 
         }
 
         @Override
-        public boolean equals(Object o){
+        public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             EdgeData edge = (EdgeData) o;
             return _src == edge._src &&
                     _dest == edge._dest &&
-                    _weight==edge._weight;
+                    _weight == edge._weight;
 
         }
+
         @Override
-        public String toString(){
-            return ""+_src+" -> "+_dest;
+        public String toString() {
+            return "" + _src + " -> " + _dest;
         }
     }
 
     /**
      * method to check if 2 graphs are equal
+     *
      * @param o
      * @return
      */
@@ -218,24 +220,24 @@ public class DWGraph_DS implements directed_weighted_graph,java.io.Serializable 
     }
 
     @Override
-     public String toString(){
-         Collection<node_data>x=_nodesList.values();
-         for (node_data node_data : x) {
-             System.out.print("{ node: "+node_data.getKey()+" neighboors:[");
-             Collection<edge_data>y=_out.get(node_data.getKey()).values();
-             int size=y.size();
-             if(size==0)
-                 System.out.println(" ] }");
-             else
-             for (edge_data edge_data : y) {
-                 if(size==1)
-                     System.out.println(edge_data.getDest()+" ] }");
-                 else
-                 System.out.print(edge_data.getDest()+",");
-                 size--;
-             }
+    public String toString() {
+        Collection<node_data> x = _nodesList.values();
+        for (node_data node_data : x) {
+            System.out.print("{ node: " + node_data.getKey() + " neighboors:[");
+            Collection<edge_data> y = _out.get(node_data.getKey()).values();
+            int size = y.size();
+            if (size == 0)
+                System.out.println(" ] }");
+            else
+                for (edge_data edge_data : y) {
+                    if (size == 1)
+                        System.out.println(edge_data.getDest() + " ] }");
+                    else
+                        System.out.print(edge_data.getDest() + ",");
+                    size--;
+                }
 
-         }
-         return "";
-     }
+        }
+        return "";
+    }
 }

@@ -8,6 +8,7 @@ import gameClient.util.Point3D;
 import org.json.JSONObject;
 
 public class CL_Agent {
+
     public static final double EPS = 0.0001;
     private static int _count = 0;
     private static int _seed = 3331;
@@ -20,9 +21,7 @@ public class CL_Agent {
     private directed_weighted_graph _gg;
     private CL_Pokemon _curr_fruit;
     private long _sg_dt;
-
     private double _value;
-
 
     public CL_Agent(directed_weighted_graph g, int start_node) {
         _gg = g;
@@ -32,6 +31,7 @@ public class CL_Agent {
         _id = -1;
         setSpeed(0);
     }
+
     public void update(String json) {
         JSONObject line;
         try {
@@ -60,6 +60,7 @@ public class CL_Agent {
     }
     //@Override
     public int getSrcNode() {return this._curr_node.getKey();}
+
     public String toJSON() {
         int d = this.getNextNode();
         String ans = "{\"Agent\":{"
@@ -114,8 +115,6 @@ public class CL_Agent {
         return this._value;
     }
 
-
-
     public int getNextNode() {
         int ans = -2;
         if(this._curr_edge==null) {
@@ -133,12 +132,15 @@ public class CL_Agent {
     public void setSpeed(double v) {
         this._speed = v;
     }
+
     public CL_Pokemon get_curr_fruit() {
         return _curr_fruit;
     }
+
     public void set_curr_fruit(CL_Pokemon curr_fruit) {
         this._curr_fruit = curr_fruit;
     }
+
     public void set_SDT(long ddtt) {
         long ddt = ddtt;
         if(this._curr_edge!=null) {
