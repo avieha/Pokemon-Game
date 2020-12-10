@@ -1,29 +1,28 @@
 package api;
 
-import java.util.Objects;
-
-public class NodeData implements node_data,java.io.Serializable{
+public class NodeData implements node_data {
 
     private int _key;
     private geo_location _location;
     private double _weight;
     private String _info;
     private int _tag;
-    private static int index=0;
+    private static int index = 0;
 
-    public NodeData(int key){
-        _key=key;
-        _weight=0;
-        _tag=0;
-        _info="";
-        _location=new GeoLocation();
+    NodeData(int key) {
+        _key = key;
+        _weight = 0;
+        _tag = 0;
+        _info = "";
+        _location = new GeoLocation();
     }
-    NodeData(){
-        _key=index++;
-        _weight=0;
-        _tag=0;
-        _info="";
-        _location=new GeoLocation();
+
+    NodeData() {
+        _key = index++;
+        _weight = 0;
+        _tag = 0;
+        _info = "";
+        _location = new GeoLocation();
     }
 
     @Override
@@ -38,8 +37,8 @@ public class NodeData implements node_data,java.io.Serializable{
 
     @Override
     public void setLocation(geo_location p) {
-        geo_location location=new GeoLocation(p.x(),p.y(),p.z());
-        _location=location;
+        geo_location location = new GeoLocation(p.x(), p.y(), p.z());
+        _location = location;
         return;
     }
 
@@ -50,7 +49,7 @@ public class NodeData implements node_data,java.io.Serializable{
 
     @Override
     public void setWeight(double w) {
-        _weight=w;
+        _weight = w;
     }
 
     @Override
@@ -60,7 +59,7 @@ public class NodeData implements node_data,java.io.Serializable{
 
     @Override
     public void setInfo(String s) {
-        _info=s;
+        _info = s;
     }
 
     @Override
@@ -70,8 +69,9 @@ public class NodeData implements node_data,java.io.Serializable{
 
     @Override
     public void setTag(int t) {
-        _tag=t;
+        _tag = t;
     }
+
 
     public static class GeoLocation implements geo_location {
 
@@ -82,7 +82,6 @@ public class NodeData implements node_data,java.io.Serializable{
             _y=0;
             _z=0;
         }
-
         GeoLocation(double x, double y, double z){
             _x=x;
             _y=y;
@@ -106,28 +105,7 @@ public class NodeData implements node_data,java.io.Serializable{
 
         @Override
         public double distance(geo_location g) {
-            return Math.sqrt((g.x()-_x)*2 + (g.y()-_y)*2 + (g.z()-_z)*2);
+            return Math.sqrt((_x*_x)+(_z*_z)+(_y*_y));
         }
-
-        @Override
-        public String toString(){
-            return _x+","+_y+","+_z;
-        }
-    }
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        NodeData nodeInfo = (NodeData) o;
-        return _key == nodeInfo._key &&
-                Integer.compare(nodeInfo._tag, _tag) == 0 &&
-                Objects.equals(_info, nodeInfo._info)&&
-                _location.x()==nodeInfo._location.x() &&
-                _location.y()==nodeInfo._location.y() &&
-                _location.z()==nodeInfo._location.z();
-    }
-    @Override
-    public String toString(){
-        return ""+_key+"";
     }
 }

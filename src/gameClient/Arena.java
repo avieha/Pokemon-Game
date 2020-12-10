@@ -1,6 +1,9 @@
 package gameClient;
 
-import api.*;
+import api.directed_weighted_graph;
+import api.edge_data;
+import api.geo_location;
+import api.node_data;
 import gameClient.util.Point3D;
 import gameClient.util.Range;
 import gameClient.util.Range2D;
@@ -19,7 +22,6 @@ import java.util.List;
  *
  */
 public class Arena {
-
     public static final double EPS1 = 0.001, EPS2=EPS1*EPS1, EPS=EPS2;
     private directed_weighted_graph _gg;
     private List<CL_Agent> _agents;
@@ -29,29 +31,21 @@ public class Arena {
     private static Point3D MAX = new Point3D(0, 100,0);
 
     public Arena() {;
-        _info = new ArrayList<>();
-        _pokemons=new ArrayList<>();
-        _agents=new ArrayList<>();
-        _gg=new DWGraph_DS();
+        _info = new ArrayList<String>();
     }
-
     private Arena(directed_weighted_graph g, List<CL_Agent> r, List<CL_Pokemon> p) {
         _gg = g;
         this.setAgents(r);
         this.setPokemons(p);
     }
-
     public void setPokemons(List<CL_Pokemon> f) {
         this._pokemons = f;
     }
-
     public void setAgents(List<CL_Agent> f) {
         this._agents = f;
     }
-
     public void setGraph(directed_weighted_graph g) {this._gg =g;}//init();}
-
-    public void init( ) {
+    private void init( ) {
         MIN=null; MAX=null;
         double x0=0,x1=0,y0=0,y1=0;
         Iterator<node_data> iter = _gg.getV().iterator();
@@ -68,19 +62,16 @@ public class Arena {
         MAX = new Point3D(x1+dx/10,y1+dy/10);
 
     }
-
     public List<CL_Agent> getAgents() {return _agents;}
-
     public List<CL_Pokemon> getPokemons() {return _pokemons;}
+
 
     public directed_weighted_graph getGraph() {
         return _gg;
     }
-
     public List<String> get_info() {
         return _info;
     }
-
     public void set_info(List<String> _info) {
         this._info = _info;
     }
@@ -102,9 +93,8 @@ public class Arena {
         }
         return ans;
     }
-
-    public static ArrayList<CL_Pokemon> json2Pokemons(String fs,directed_weighted_graph g) {
-        ArrayList<CL_Pokemon> ans = new ArrayList<>();
+    public static ArrayList<CL_Pokemon> json2Pokemons(String fs) {
+        ArrayList<CL_Pokemon> ans = new  ArrayList<CL_Pokemon>();
         try {
             JSONObject ttt = new JSONObject(fs);
             JSONArray ags = ttt.getJSONArray("Pokemons");
@@ -116,46 +106,39 @@ public class Arena {
                 //double s = 0;//pk.getDouble("speed");
                 String p = pk.getString("pos");
                 CL_Pokemon f = new CL_Pokemon(new Point3D(p), t, v, 0, null);
-//                Arena.updateEdge(f,g);
-//                System.out.println("f edge after update: "+f.get_edge());
                 ans.add(f);
             }
         }
         catch (JSONException e) {e.printStackTrace();}
         return ans;
     }
-
     public static void updateEdge(CL_Pokemon fr, directed_weighted_graph g) {
         //	oop_edge_data ans = null;
         Iterator<node_data> itr = g.getV().iterator();
         while(itr.hasNext()) {
             node_data v = itr.next();
             Iterator<edge_data> iter = g.getE(v.getKey()).iterator();
-            while (iter.hasNext()) {
+            while(iter.hasNext()) {
                 edge_data e = iter.next();
-//                System.out.println("geo location is: "+fr.getLocation());
-                boolean f = isOnEdge(fr.getLocation(), e, fr.getType(), g);
-                if (f) {
-                    fr.set_edge(e);
-                }
+                boolean f = isOnEdge(fr.getLocation(), e,fr.getType(), g);
+                if(f) {fr.set_edge(e);}
             }
         }
     }
 
     private static boolean isOnEdge(geo_location p, geo_location src, geo_location dest ) {
+
         boolean ans = false;
         double dist = src.distance(dest);
         double d1 = src.distance(p) + p.distance(dest);
         if(dist>d1-EPS2) {ans = true;}
         return ans;
     }
-
     private static boolean isOnEdge(geo_location p, int s, int d, directed_weighted_graph g) {
         geo_location src = g.getNode(s).getLocation();
         geo_location dest = g.getNode(d).getLocation();
         return isOnEdge(p,src,dest);
     }
-
     private static boolean isOnEdge(geo_location p, edge_data e, int type, directed_weighted_graph g) {
         int src = g.getNode(e.getSrc()).getKey();
         int dest = g.getNode(e.getDest()).getKey();
@@ -186,10 +169,10 @@ public class Arena {
         Range yr = new Range(y0,y1);
         return new Range2D(xr,yr);
     }
-
     public static Range2Range w2f(directed_weighted_graph g, Range2D frame) {
         Range2D world = GraphRange(g);
         Range2Range ans = new Range2Range(world, frame);
         return ans;
     }
+
 }
