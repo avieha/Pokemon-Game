@@ -10,7 +10,7 @@ import java.io.Serializable;
  * 5. move(); // move all Agents
  * 6. chooseNextEdge(int agentID, int destNodeID); //main algorithm
  * 7. stop_game()
- * 8. login(long id): (for reporting the results of Ex2)
+ * 8. login(long id): (for reporting the results of gameClient.Ex2)
  * @author boaz.benmoshe
  *
  */
