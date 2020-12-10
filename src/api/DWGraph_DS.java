@@ -1,10 +1,8 @@
 package api;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 public class DWGraph_DS implements directed_weighted_graph {
-
     private HashMap<Integer, node_data> _nodesList;
     private HashMap<Integer, HashMap<Integer, edge_data>> _out;
     private HashMap<Integer, HashMap<Integer, node_data>> _in;
@@ -41,6 +39,8 @@ public class DWGraph_DS implements directed_weighted_graph {
     public void addNode(node_data n) {
         if (n == null)
             return;
+        if (getNode(n.getKey()) != null)
+            return;
         // HashMap<Integer, node_data> in = new HashMap<Integer, node_data>();
         //HashMap<Integer, edge_data> out = new HashMap<Integer, edge_data>();
         _in.put(n.getKey(), new HashMap<Integer, node_data>());
@@ -48,11 +48,13 @@ public class DWGraph_DS implements directed_weighted_graph {
         _nodesList.put(n.getKey(), n);
         _nodeSize++;
         _MC++;
+
+
     }
 
     @Override
     public void connect(int src, int dest, double w) {
-        if (getNode(src) == null || getNode(dest) == null || src == dest)
+        if (getNode(src) == null || getNode(dest) == null || src == dest || w < 0)
             return;
         if (getEdge(src, dest) != null) {
             if (getEdge(src, dest).getWeight() == w)
@@ -60,9 +62,14 @@ public class DWGraph_DS implements directed_weighted_graph {
             edge_data e = new EdgeData(src, dest, w);
             _out.get(src).put(dest, e);
             _in.get(dest).put(src, getNode(src));
-            _edgeSize++;
-            _MC++;
+            return;
         }
+
+        edge_data e = new EdgeData(src, dest, w);
+        _out.get(src).put(dest, e);
+        _in.get(dest).put(src, getNode(src));
+        _edgeSize++;
+        _MC++;
     }
 
     @Override
@@ -81,14 +88,20 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     @Override
     public node_data removeNode(int key) {
+        if (!_nodesList.containsKey(key))
+            return null;
         Collection<node_data> inners = _in.get(key).values();
         for (node_data node_data : inners) {
             _out.get(node_data.getKey()).remove(key);
             _edgeSize--;
             _MC++;
         }
-        _edgeSize -= _out.size();
-        _MC += _out.size();
+        Collection<edge_data> outers = _out.get(key).values();
+        for (edge_data outer : outers) {
+            _in.get(outer.getDest()).remove(key);
+        }
+        _edgeSize -= _out.get(key).size();
+        _MC += _out.get(key).size();
         _out.remove(key);
         _nodeSize--;
         _MC++;
@@ -102,12 +115,13 @@ public class DWGraph_DS implements directed_weighted_graph {
             return null;
         _in.get(dest).remove(src);
         _edgeSize--;
+        _MC++;
         return _out.get(src).remove(dest);
     }
 
     @Override
     public int nodeSize() {
-        return _nodeSize;
+        return _nodesList.size();
     }
 
     @Override
@@ -120,8 +134,8 @@ public class DWGraph_DS implements directed_weighted_graph {
         return _MC;
     }
 
-    public class EdgeData implements edge_data {
 
+    private class EdgeData implements edge_data {
         private int _src, _dest;
         private double _weight;
         private String _info;
@@ -169,8 +183,43 @@ public class DWGraph_DS implements directed_weighted_graph {
         public void setTag(int t) {
             _tag = t;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            EdgeData edge = (EdgeData) o;
+            return _src == edge._src &&
+                    _dest == edge._dest &&
+                    _weight == edge._weight;
+
+        }
+
+        @Override
+        public String toString() {
+            return "" + _src + " -> " + _dest;
+        }
     }
 
+    /**
+     * method to check if 2 graphs are equal
+     *
+     * @param o
+     * @return
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DWGraph_DS wGraph_ds = (DWGraph_DS) o;
+        return _nodeSize == wGraph_ds._nodeSize &&
+                _edgeSize == wGraph_ds._edgeSize &&
+                Objects.equals(_nodesList, wGraph_ds._nodesList) &&
+                Objects.equals(_in, wGraph_ds._in) &&
+                Objects.equals(_out, wGraph_ds._out);
+    }
+
+    @Override
     public String toString() {
         Collection<node_data> x = _nodesList.values();
         for (node_data node_data : x) {
