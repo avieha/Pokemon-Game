@@ -69,7 +69,7 @@ public class Arena {
 
     }
 
-    public List<CL_Agent> getAgents() {return _agents;}
+    public List<CL_Agent> getAgents() { return _agents;}
 
     public List<CL_Pokemon> getPokemons() {return _pokemons;}
 
@@ -116,7 +116,7 @@ public class Arena {
                 //double s = 0;//pk.getDouble("speed");
                 String p = pk.getString("pos");
                 CL_Pokemon f = new CL_Pokemon(new Point3D(p), t, v, 0, null);
-//                Arena.updateEdge(f,g);
+               Arena.updateEdge(f,g);
 //                System.out.println("f edge after update: "+f.get_edge());
                 ans.add(f);
             }
