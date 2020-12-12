@@ -12,31 +12,22 @@ import java.util.*;
 
 public class Ex2 implements Runnable {
 
+    private int scnum;
+    private int id;
     private static MyFrame _window;
     private static Arena _arena;
 
     public static void main(String[] args) {
+//        Ex2 a = new Ex2();
+//        a.scnum = Integer.parseInt(args[0]);
+//        a.id = Integer.parseInt(args[1]);
         Thread client = new Thread(new Ex2());
         client.start();
-/*        game_service game = Game_Server_Ex2.getServer(0);
-//        game.login();
-        game.addAgent(1);
-        game.startGame();
-        String graph = game.getGraph();
-        String agents=game.getAgents();
-        String pok=game.getPokemons();
-        while (game.isRunning()){
-            game.chooseNextEdge(0,2);
-            game.move();
-            JsonObject p = JsonParser.parseString(pok).getAsJsonObject();
-
-//            System.out.println(game.timeToEnd());
-        }*/
     }
 
     @Override
     public void run() {
-        int scenario_num = 1;
+        int scenario_num = scnum;
         game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
         //	int id = 999;
         //	game.login(id);
@@ -55,7 +46,7 @@ public class Ex2 implements Runnable {
         init(game, gg);
         game.startGame();
         int ind = 0;
-        long dt = 100;
+        long dt = 3000;
         while (game.isRunning()) {
             moveAgents(game, gg);
             try {
@@ -65,61 +56,8 @@ public class Ex2 implements Runnable {
                 e.printStackTrace();
             }
         }
-        String res = game.toString();
+        System.out.println(game.toString());
         System.exit(0);
-    }
-
-    /**
-     * Moves each of the agents along the edge,
-     * in case the agent is on a node the next destination (next edge) is chosen (randomly).
-     *
-     * @param game
-     * @param gg
-     * @param
-     */
-    private static void moveAgents(game_service game, directed_weighted_graph gg) {
-        String lg = game.move();// returns the current status of the agents
-        List<CL_Agent> log = Arena.getAgents(lg, gg);
-        _arena.setAgents(log);
-        //ArrayList<OOP_Point3D> rs = new ArrayList<OOP_Point3D>();
-        String fs = game.getPokemons();
-        List<CL_Pokemon> ffs = Arena.json2Pokemons(fs, gg);
-        _arena.setPokemons(ffs);
-        for (int i = 0; i < log.size(); i++) {
-            CL_Agent ag = log.get(i);
-            System.out.println("curr fruit: "+ag.get_curr_fruit());
-            int id = ag.getID();
-            int dest = ag.getNextNode();
-            int src = ag.getSrcNode();
-            double v = ag.getValue();
-            if (dest == -1) {
-                dest = nextNode(gg, src);
-                game.chooseNextEdge(ag.getID(), dest);
-                System.out.println("Agent: " + id + ", val: " + v + "   turned to node: " + dest);
-            }
-        }
-    }
-
-    /**
-     * a very simple random walk implementation!
-     *
-     * @param g
-     * @param src
-     * @return
-     */
-    private static int nextNode(directed_weighted_graph g, int src) {
-        int ans = -1;
-        Collection<edge_data> ee = g.getE(src);
-        Iterator<edge_data> itr = ee.iterator();
-        int s = ee.size();
-        int r = (int) (Math.random() * s);
-        int i = 0;
-        while (i < r) {
-            itr.next();
-            i++;
-        }
-        ans = itr.next().getDest();
-        return ans;
     }
 
     private void init(game_service game, directed_weighted_graph gg) {
@@ -155,7 +93,7 @@ public class Ex2 implements Runnable {
             }
             for (int a = 0; a < agenum; a++) {
                 if (!q.isEmpty()) {
-                    System.out.println("first in queue: " + q.peek().getValue() + " on edge " + q.peek().get_edge()+" type "+q.peek().getType());
+                    System.out.println("first in queue: " + q.peek().getValue() + " on edge " + q.peek().get_edge() + " type " + q.peek().getType());
                     CL_Pokemon c = q.remove();
                     int src = c.get_edge().getSrc();
                     int dest = c.get_edge().getDest();
@@ -184,9 +122,9 @@ public class Ex2 implements Runnable {
                     game.chooseNextEdge(a, a % cl_fs.size() + 1);
                 }
             }
-            List<CL_Agent> agents = Arena.getAgents(game.getAgents(),gg);
-            int i=0;
-            System.out.println("agents: "+agents);
+            List<CL_Agent> agents = Arena.getAgents(game.getAgents(), gg);
+            int i = 0;
+            System.out.println("agents: " + agents);
             for (CL_Agent agent : agents) {
                 agent.set_curr_fruit(cl_fs.get(i));
                 i++;
@@ -194,5 +132,59 @@ public class Ex2 implements Runnable {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Moves each of the agents along the edge,
+     * in case the agent is on a node the next destination (next edge) is chosen (randomly).
+     *
+     * @param game
+     * @param gg
+     * @param
+     */
+    private static void moveAgents(game_service game, directed_weighted_graph gg) {
+        String lg = game.getAgents();// returns the current status of the agents
+        List<CL_Agent> log = Arena.getAgents(lg, gg);
+        _arena.setAgents(log);
+        //ArrayList<OOP_Point3D> rs = new ArrayList<OOP_Point3D>();
+        String fs = game.getPokemons();
+        List<CL_Pokemon> ffs = Arena.json2Pokemons(fs, gg);
+        _arena.setPokemons(ffs);
+        for (int i = 0; i < log.size(); i++) {
+            CL_Agent ag = log.get(i);
+            //System.out.println("curr fruit: "+ag.get_curr_fruit());
+            int id = ag.getID();
+            int src = ag.getSrcNode();
+            int dest = ag.getNextNode();
+            double v = ag.getValue();
+            if (dest == -1) {
+                dest = nextNode(gg, src, game);
+                game.chooseNextEdge(ag.getID(), dest);
+                System.out.println("Agent: " + id + ", val: " + v + " turned to node: " + dest);
+            }
+        }
+        game.move();
+    }
+
+    /**
+     * a very simple random walk implementation!
+     *
+     * @param g
+     * @param src
+     * @return
+     */
+    private static int nextNode(directed_weighted_graph g, int src, game_service game) {
+        int ans = -1;
+        Collection<edge_data> ee = g.getE(src);
+        Iterator<edge_data> itr = ee.iterator();
+        int size = ee.size();
+        int r = (int) (Math.random() * size);
+        int i = 0;
+        while (i < r) {
+            itr.next();
+            i++;
+        }
+        ans = itr.next().getDest();
+        return ans;
     }
 }

@@ -53,7 +53,6 @@ public class MyFrame extends JFrame {
         drawGraph(g);
         drawAgants(g);
         drawInfo(g);
-
     }
 
     public void paint(Graphics g) {

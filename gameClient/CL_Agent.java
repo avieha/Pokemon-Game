@@ -60,7 +60,6 @@ public class CL_Agent {
     }
     //@Override
     public int getSrcNode() {return this._curr_node.getKey();}
-
     public String toJSON() {
         int d = this.getNextNode();
         String ans = "{\"Agent\":{"
@@ -75,7 +74,6 @@ public class CL_Agent {
         return ans;
     }
     private void setMoney(double v) {_value = v;}
-
     public boolean setNextNode(int dest) {
         boolean ans = false;
         int src = this._curr_node.getKey();
@@ -103,18 +101,14 @@ public class CL_Agent {
         // TODO Auto-generated method stub
         return this._id;
     }
-
     public geo_location getLocation() {
         // TODO Auto-generated method stub
         return _pos;
     }
-
-
     public double getValue() {
         // TODO Auto-generated method stub
         return this._value;
     }
-
     public int getNextNode() {
         int ans = -2;
         if(this._curr_edge==null) {
@@ -124,7 +118,6 @@ public class CL_Agent {
         }
         return ans;
     }
-
     public double getSpeed() {
         return this._speed;
     }
