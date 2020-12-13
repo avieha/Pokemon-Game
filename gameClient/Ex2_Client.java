@@ -1,3 +1,4 @@
+/*
 package gameClient;
 
 import Server.Game_Server_Ex2;
@@ -53,13 +54,15 @@ public class Ex2_Client implements Runnable{
         System.out.println(res);
         System.exit(0);
     }
-    /**
+    */
+/**
      * Moves each of the agents along the edge,
      * in case the agent is on a node the next destination (next edge) is chosen (randomly).
      * @param game
      * @param gg
      * @param
-     */
+     *//*
+
     private static void moveAgants(game_service game, directed_weighted_graph gg) {
         String lg = game.move();
         List<CL_Agent> log = Arena.getAgents(lg, gg);
@@ -81,12 +84,14 @@ public class Ex2_Client implements Runnable{
             }
         }
     }
-    /**
+    */
+/**
      * a very simple random walk implementation!
      * @param g
      * @param src
      * @return
-     */
+     *//*
+
     private static int nextNode(directed_weighted_graph g, int src) {
         int ans = -1;
         Collection<edge_data> ee = g.getE(src);
@@ -137,4 +142,4 @@ public class Ex2_Client implements Runnable{
         }
         catch (JSONException e) {e.printStackTrace();}
     }
-}
+}*/

@@ -24,14 +24,18 @@ public class MyFrame extends JFrame {
     private int _ind;
     private Arena _ar;
     private gameClient.util.Range2Range _w2f;
+    private JLabel time=new JLabel();
+    private long clock;
 
     public MyFrame(String a) {
         super(a);
         int _ind = 0;
+        this.add(time);
     }
 
-    public void update(Arena ar) {
+    public void update(Arena ar,long time) {
         this._ar = ar;
+        this.clock=time;
         updateFrame();
     }
 
@@ -53,6 +57,16 @@ public class MyFrame extends JFrame {
         drawGraph(g);
         drawAgants(g);
         drawInfo(g);
+        drawClock(g);
+    }
+
+    public void drawClock(Graphics g){
+        String t = "Time to end: "+String.valueOf(this.clock/1000);
+        this.time = new JLabel(t);
+        double x = 0.04*this.getHeight();
+        g.setFont(new Font(t,Font.BOLD,(int)x));
+        g.setColor(Color.BLACK);
+        g.drawString(t,45,80);
     }
 
     public void paint(Graphics g) {

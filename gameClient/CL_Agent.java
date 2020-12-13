@@ -60,6 +60,7 @@ public class CL_Agent {
     }
     //@Override
     public int getSrcNode() {return this._curr_node.getKey();}
+
     public String toJSON() {
         int d = this.getNextNode();
         String ans = "{\"Agent\":{"
@@ -73,7 +74,9 @@ public class CL_Agent {
                 + "}";
         return ans;
     }
+
     private void setMoney(double v) {_value = v;}
+
     public boolean setNextNode(int dest) {
         boolean ans = false;
         int src = this._curr_node.getKey();
@@ -87,9 +90,11 @@ public class CL_Agent {
     public void setCurrNode(int src) {
         this._curr_node = _gg.getNode(src);
     }
+
     public boolean isMoving() {
         return this._curr_edge!=null;
     }
+
     public String toString() {
         return toJSON();
     }
@@ -112,7 +117,8 @@ public class CL_Agent {
     public int getNextNode() {
         int ans = -2;
         if(this._curr_edge==null) {
-            ans = -1;}
+            ans = -1;
+        }
         else {
             ans = this._curr_edge.getDest();
         }
@@ -155,9 +161,11 @@ public class CL_Agent {
     public edge_data get_curr_edge() {
         return this._curr_edge;
     }
+
     public long get_sg_dt() {
         return _sg_dt;
     }
+
     public void set_sg_dt(long _sg_dt) {
         this._sg_dt = _sg_dt;
     }
