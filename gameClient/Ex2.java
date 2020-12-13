@@ -14,7 +14,6 @@ public class Ex2 implements Runnable {
 
     private static MyFrame _window;
     private static Arena _arena;
-
     public static void main(String[] args) {
         Thread client = new Thread(new Ex2());
         client.start();
@@ -22,7 +21,7 @@ public class Ex2 implements Runnable {
 
     @Override
     public void run() {
-        int scenario_num = 1;
+        int scenario_num = 20;
         game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
         //	int id = 999;
         //	game.login(id);
@@ -41,7 +40,7 @@ public class Ex2 implements Runnable {
         init(game, gg);
         game.startGame();
         int ind = 0;
-        long dt = 100;
+        long dt = 10;
         while (game.isRunning()) {
             moveAgents(game, gg);
             try {
@@ -76,15 +75,17 @@ public class Ex2 implements Runnable {
         for (int i = 0; i < log.size(); i++) {
             CL_Agent ag = log.get(i);
            // System.out.println("agent: "+ag);
+            //System.out.println(game.chooseNextEdge());
             int id = ag.getID();
             int dest = ag.getNextNode();
             int src = ag.getSrcNode();
             double v = ag.getValue();
                 if (dest == -1) {
-                    dest = nextNodevalue(game, gg, src);
+                    dest = nextNodedist(game, gg, src,id);
                     game.chooseNextEdge(ag.getID(), dest);
                     System.out.println("Agent: " + id + ", val: " + v + "   turned to node: " + dest);
-                }game.move();
+                }
+                game.move();
             }
         }
 
@@ -95,7 +96,7 @@ public class Ex2 implements Runnable {
      * @param src
      * @return
      */
-    private static int nextNodedist(game_service game,directed_weighted_graph g, int src) {
+    private static int nextNodedist(game_service game,directed_weighted_graph g, int src,int id) {
         int ans = -1;
         Collection<edge_data> ee = g.getE(src);
         Iterator<edge_data> itr = ee.iterator();
@@ -107,17 +108,19 @@ public class Ex2 implements Runnable {
         int dest=0;
         int bfdest=0;
         int type=0;
+        int index=0;
+        List<CL_Agent>agentlist= _arena.getAgents();
         for (CL_Pokemon cl_pokemon : pklist) {
             temp= algo.shortestPathDist(src,cl_pokemon.get_edge().getDest());
             if(temp<min){
                 min=temp;
                 dest= cl_pokemon.get_edge().getDest();
                 bfdest=cl_pokemon.get_edge().getSrc();
-                type= cl_pokemon.getType();
+                type=index;
             }
+            index++;
         }
         List<node_data> nodelist=algo.shortestPath(src,dest);
-        System.out.println("list: "+nodelist);
         if(nodelist.size()>1){
             nodelist.remove(0);
             return nodelist.get(0).getKey();
@@ -218,12 +221,6 @@ public class Ex2 implements Runnable {
                     game.addAgent(a % cl_fs.size());
                     game.chooseNextEdge(a, a % cl_fs.size() + 1);
                 }
-            }
-            List<CL_Agent> agents = Arena.getAgents(game.getAgents(),gg);
-            int i=0;
-            for (CL_Agent agent : agents) {
-                agent.set_curr_fruit(cl_fs.get(i));
-                i++;
             }
         } catch (JSONException e) {
             e.printStackTrace();
