@@ -275,6 +275,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         double _edgeweight;
         int prevnode;
 
+
         vertex(node_data node) {
             _node = node;
             _edgeweight = Integer.MAX_VALUE;

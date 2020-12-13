@@ -29,9 +29,9 @@ public class Arena {
     private static Point3D MAX = new Point3D(0, 100,0);
 
     public Arena() {;
-        _info = new ArrayList<>();
-        _pokemons=new ArrayList<>();
-        _agents=new ArrayList<>();
+        _info = new ArrayList<String>();
+        _pokemons=new ArrayList<CL_Pokemon>();
+        _agents=new ArrayList<CL_Agent>();
         _gg=new DWGraph_DS();
     }
 
@@ -69,7 +69,7 @@ public class Arena {
 
     }
 
-    public List<CL_Agent> getAgents() {return _agents;}
+    public List<CL_Agent> getAgents() { return _agents;}
 
     public List<CL_Pokemon> getPokemons() {return _pokemons;}
 
@@ -87,7 +87,7 @@ public class Arena {
 
     ////////////////////////////////////////////////////
     public static List<CL_Agent> getAgents(String aa, directed_weighted_graph gg) {
-        ArrayList<CL_Agent> ans = new ArrayList<>();
+        ArrayList<CL_Agent> ans = new ArrayList<CL_Agent>();
         try {
             JSONObject ttt = new JSONObject(aa);
             JSONArray ags = ttt.getJSONArray("Agents");
@@ -104,7 +104,7 @@ public class Arena {
     }
 
     public static ArrayList<CL_Pokemon> json2Pokemons(String fs,directed_weighted_graph g) {
-        ArrayList<CL_Pokemon> ans = new ArrayList<>();
+        ArrayList<CL_Pokemon> ans = new ArrayList<CL_Pokemon>();
         try {
             JSONObject ttt = new JSONObject(fs);
             JSONArray ags = ttt.getJSONArray("Pokemons");
@@ -116,7 +116,7 @@ public class Arena {
                 //double s = 0;//pk.getDouble("speed");
                 String p = pk.getString("pos");
                 CL_Pokemon f = new CL_Pokemon(new Point3D(p), t, v, 0, null);
-//                Arena.updateEdge(f,g);
+               Arena.updateEdge(f,g);
 //                System.out.println("f edge after update: "+f.get_edge());
                 ans.add(f);
             }
