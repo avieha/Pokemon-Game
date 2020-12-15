@@ -43,13 +43,10 @@ public class Ex2 implements Runnable {
 
     @Override
     public void run() {
-        //int scenario_num = 23;
-        //game_service game = Game_Server_Ex2.getServer(scenario_num);
         game_service game = Game_Server_Ex2.getServer(scnum); // you have [0,23] games
         //game.login(id);
         System.out.println("id: " + id + " level: " + scnum);
         String g = game.getGraph();
-        String pks = game.getPokemons();
         try {
             PrintWriter pw = new PrintWriter(new File("graph.txt"));
             pw.write(g);
@@ -62,11 +59,17 @@ public class Ex2 implements Runnable {
         directed_weighted_graph gg = g0.getGraph();
         init(game, gg);
         game.startGame();
-        int ind = 0;
-        long dt = 100;
+        long timer = game.timeToEnd() / 1000;
+        long dt = 0;
         while (game.isRunning()) {
             moveAgents(game, gg);
             try {
+                if (game.timeToEnd() / 1000 >= timer * 0.5) {
+                    dt = 130;
+                }
+                if (game.timeToEnd() / 1000 <= timer * 0.5) {
+                    dt = 80;
+                }
                 _window.update(_arena, game.timeToEnd());
                 _window.repaint();
                 Thread.sleep(dt);
@@ -99,12 +102,11 @@ public class Ex2 implements Runnable {
             int id = ag.getID();
             int dest = ag.getNextNode();
             int src = ag.getSrcNode();
-            double v = ag.getValue();
-            //System.out.println("map: "+agTopk);
+            //double v = ag.getValue();
             if (dest == -1) {
                 dest = nextNodedist(game, gg, id, src);
                 game.chooseNextEdge(ag.getID(), dest);
-                System.out.println("Agent: " + id + ", val: " + v + "   turned to node: " + dest);
+                //System.out.println("Agent: " + id + ", val: " + v + "   turned to node: " + dest);
             }
         }
         game.move();
@@ -118,7 +120,6 @@ public class Ex2 implements Runnable {
      * @return
      */
     private static int nextNodedist(game_service game, directed_weighted_graph g, int id, int src) {
-        Collection<edge_data> ee = g.getE(src);
         List<CL_Pokemon> pklist = Arena.json2Pokemons(game.getPokemons(), g);
         List<CL_Agent> aglist = Arena.getAgents(game.getAgents(), g);
         dw_graph_algorithms algo = new DWGraph_Algo();
@@ -146,7 +147,6 @@ public class Ex2 implements Runnable {
         }
         agTopk.put(id, dest);
         List<node_data> nodelist = algo.shortestPath(src, dest);
-        System.out.println("list: " + nodelist);
         if (nodelist.size() > 1) {
             nodelist.remove(0);
             return nodelist.get(0).getKey();
@@ -154,7 +154,7 @@ public class Ex2 implements Runnable {
             return bfdest;
     }
 
-    private static int nextNodevalue(game_service game, directed_weighted_graph g, int src) {
+    /*private static int nextNodevalue(game_service game, directed_weighted_graph g, int src) {
         int ans = -1;
         Collection<edge_data> ee = g.getE(src);
         Iterator<edge_data> itr = ee.iterator();
@@ -182,18 +182,18 @@ public class Ex2 implements Runnable {
             return nodelist.get(0).getKey();
         } else
             return bfdest;
-    }
+    }*/
 
     private void init(game_service game, directed_weighted_graph gg) {
         String info = game.toString();
         String fs = game.getPokemons();
         System.out.println("game info: " + info);
         ArrayList<CL_Pokemon> cl_fs = Arena.json2Pokemons(fs, gg);
-        System.out.println("Pokemons: " + cl_fs);
+        //System.out.println("Pokemons: " + cl_fs);
         _arena = new Arena();
         _arena.setGraph(gg);
         _arena.setPokemons(cl_fs);
-        _window = new MyFrame("The Pokemons Game");
+        _window = new MyFrame("The Pokemons Game - Level "+scnum);
         _window.setSize(700, 500);
         _window.update(_arena, game.timeToEnd());
         _window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -223,25 +223,21 @@ public class Ex2 implements Runnable {
                     int dest = c.get_edge().getDest();
                     if (c.getType() == -1 && dest > src) {
                         game.addAgent(dest);
-                        System.out.println("into node " + dest + " at 1 if");
                         game.chooseNextEdge(a, src);
                         agTopk.put(a, src);
                     }
                     if (c.getType() == -1 && dest < src) {
                         game.addAgent(src);
-                        System.out.println("into node " + src + " at 2 if");
                         game.chooseNextEdge(a, dest);
                         agTopk.put(a, dest);
                     }
                     if (c.getType() == 1 && dest > src) {
                         game.addAgent(src);
-                        System.out.println("into node " + src + " at 3 if");
                         game.chooseNextEdge(a, dest);
                         agTopk.put(a, dest);
                     }
                     if (c.getType() == 1 && dest < src) {
                         game.addAgent(dest);
-                        System.out.println("into node " + dest + " at 4 if");
                         game.chooseNextEdge(a, src);
                         agTopk.put(a, src);
                     }

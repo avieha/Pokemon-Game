@@ -66,7 +66,18 @@ public class MyFrame extends JFrame {
         double x = 0.04*this.getHeight();
         g.setFont(new Font(t,Font.BOLD,(int)x));
         g.setColor(Color.BLACK);
-        g.drawString(t,45,80);
+        g.drawString(t,45,70);
+        List<CL_Agent> rs = _ar.getAgents();
+        String[] s = new String[rs.size()];
+        int i=0;
+        for (CL_Agent r : rs) {
+            s[i] = "Agent "+r.getID()+": "+String.valueOf(r.getValue());
+            i++;
+        }
+        for (i=0;i<rs.size();i++) {
+            //g.setFont(new Font(t,Font.BOLD,(int)x));
+            g.drawString(s[i],45,90+(20*i));
+        }
     }
 
     public void paint(Graphics g) {
@@ -135,7 +146,6 @@ public class MyFrame extends JFrame {
 
     private void drawAgants(Graphics g) {
         List<CL_Agent> rs = _ar.getAgents();
-        //	Iterator<OOP_Point3D> itr = rs.iterator();
         g.setColor(Color.red);
         int i = 0;
         while (rs != null && i < rs.size()) {
@@ -143,7 +153,6 @@ public class MyFrame extends JFrame {
             int r = 8;
             i++;
             if (c != null) {
-
                 geo_location fp = this._w2f.world2frame(c);
                 g.fillOval((int) fp.x() - r, (int) fp.y() - r, 2 * r, 2 * r);
             }
