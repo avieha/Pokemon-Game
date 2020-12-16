@@ -73,9 +73,7 @@ the tests checks simple methods like adding adding or removing a node to the com
 To run this project you need at first to Pull the file from the Git repository with the command :
 
 $ git clone https://github.com/avieha/ex2.git
-then you have several options to execute the main program
-*
-*
+then you have several options
 
 ## Sources
 In the algorithm of Dijikstra i get help from a youtube video: https://www.youtube.com/watch?v=FSm1zybd0Tk
