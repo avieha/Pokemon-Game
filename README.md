@@ -12,7 +12,7 @@
 * [Sources](#sources)
 
 ## General info
-# Directed Wighted Graph:
+Directed Wighted Graph:
 a diredted weighted grap(dwg) is a graph made from nodes - |V| and edges = |E| 
 the classes which implemnt the dwg are int the folder "API" and they are:
 * NodeData- this class implemnts the interface of "node_data" and it represent the nodes in the graph.
@@ -54,7 +54,7 @@ that does two BFS traversals of graph:
    from same vertex v (Same as step 2). If BFS traversal
    doesn’t visit all vertices, then return false. 
    Otherwise, return true.
- ### Time complexity:
+  Time complexity:
  Time complexity of above implementation is same as Breadth First Search which is O(V+E).
 
 * Dijikstra- in this algorithm you use a priority queue with a comperator wich compare the weight of the edges and mantain the node with the shortest ptha in the top of the queue so at first you add the source node to the queue and then ron over a while loop antil the queue is empty. inside the loop you mark the top element as visited you remove him from queue and add all his not visited neighbors to the queue. Every node that get into the queue have the sum of the edges from source node to him in his Tag value.
@@ -72,11 +72,13 @@ the tests checks simple methods like adding adding or removing a node to the com
 ## Launch
 To run this project you need at first to Pull the file from the Git repository with the command :
 
-$ git clone https://github.com/avieha/ex2.git
+$ git clone https://github.com/avieha/ex2.git 
+
 then you have several options
 
 ## Sources
-In the algorithm of Dijikstra i get help from a youtube video: https://www.youtube.com/watch?v=FSm1zybd0Tk
+In the algorithm of Dijikstra i get help from a youtube video: https://www.youtube.com/watch?v=FSm1zybd0Tk 
+
 info about Kosaraju's algorithm https://en.wikipedia.org/wiki/Strongly_connected_component
 https://www.geeksforgeeks.org/check-given-directed-graph-strongly-connected-set-2-kosaraju-using-bfs/?ref=rp
 
