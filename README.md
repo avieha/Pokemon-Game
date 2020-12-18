@@ -1,4 +1,4 @@
-#                                                                    directed Weighted graph
+#                                                                    Directed Weighted Graph
 
  This project is divided to two parts. in the first part we implemnted a directed weighted graph, and in the second part 
  we use the directed weighted graph to tun a "pokemon" game
