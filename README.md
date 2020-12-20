@@ -56,14 +56,16 @@ in the folder "tests" you can find 3 Junit classes that test all the methods in 
 
 ## Launch
 To run this project you need at first to Pull the file from the Git repository with the command :
-
+```
 $ git clone https://github.com/avieha/ex2.git 
-
+```
 then you have several options
 1) run the ex2.jar file by double clicking on it.
 
 2) from CMD: open your terminal and insert those commands:
+```
 $ java -jar ex2 <id number> <game level>
+```
 (you can choose levels between 0-23)
 		
 3) from your java Development Environment.
