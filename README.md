@@ -75,6 +75,14 @@ To run this project you need at first to Pull the file from the Git repository w
 $ git clone https://github.com/avieha/ex2.git 
 
 then you have several options
+1) run the jar.
+to run the jar versiom you need to open your teminal and insert those commands
+java -jar ex2 <id number> <game level [0,23]
+		
+2)from your java Development Environment.
+you need to run the main program which is EX2
+after running the main you will see the login window there you will have to insert your id and the game level [0,23]
+and the game will start.
 
 ## Sources
 In the algorithm of Dijikstra i get help from a youtube video: https://www.youtube.com/watch?v=FSm1zybd0Tk 
