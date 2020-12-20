@@ -33,7 +33,8 @@ or a list of all the neighboors of a specific node, and some more methods.
 -load- load a saved Json file and create anew graph.  in this method we used the GSon library of google
 
 ### pokemon game
-in the pokemon game you have a number of agents upon a dwg and there are also a number of pokemons in the edges
+In the pokemon game the player enters his own id and a level number, which sent to the server, and than the game runs totally automated, with smart planned algorithm which knows where to send the agents at each round, when every agent can go to his neighbors only.
+after each pokemon is being eaten, a new one is being immidiatley generting, at the end the best Score determined by value of eaten pokemons, and a limit of 10 'moves' per second.
 
 ## Data Structure
 We decide to write this project using 3 Hasmaps. 1 for the nodes and 2 for the edges. the first hasmap of the edges is used to keep all the edges that come out
