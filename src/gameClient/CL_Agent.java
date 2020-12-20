@@ -23,6 +23,7 @@ public class CL_Agent {
     private edge_data _curr_edge;
     private node_data _curr_node;
     private directed_weighted_graph _gg;
+
     private double _value;
 
     public CL_Agent(directed_weighted_graph g, int start_node) {
@@ -79,7 +80,6 @@ public class CL_Agent {
                 + "}";
         return ans;
     }
-
     private void setMoney(double v) {
         _value = v;
     }
@@ -108,12 +108,10 @@ public class CL_Agent {
         // TODO Auto-generated method stub
         return this._id;
     }
-
     public geo_location getLocation() {
         // TODO Auto-generated method stub
         return _pos;
     }
-
     public double getValue() {
         // TODO Auto-generated method stub
         return this._value;
@@ -128,7 +126,6 @@ public class CL_Agent {
         }
         return ans;
     }
-
     public double getSpeed() {
         return this._speed;
     }

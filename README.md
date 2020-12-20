@@ -79,4 +79,9 @@ In the algorithm of Dijikstra i get help from a youtube video: https://www.youtu
 info about Kosaraju's algorithm https://en.wikipedia.org/wiki/Strongly_connected_component
 https://www.geeksforgeeks.org/check-given-directed-graph-strongly-connected-set-2-kosaraju-using-bfs/?ref=rp
 
+<<<<<<< HEAD
 ```
+=======
+```
+  
+>>>>>>> ec2e451c83376189057254ea33d48d617c2ea25f

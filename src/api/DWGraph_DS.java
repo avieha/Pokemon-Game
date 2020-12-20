@@ -108,7 +108,6 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      * method to get a collection of all node in the graph
-     *
      * @return
      */
     @Override
@@ -119,7 +118,6 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      * method to get all edges goes out from  a specific node
-     *
      * @param node_id
      * @return
      */
@@ -262,7 +260,6 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * constructor
-         *
          * @param src
          * @param dest
          * @param w
@@ -277,7 +274,6 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * methot to get source of the edge
-         *
          * @return src
          */
         @Override
@@ -287,7 +283,6 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * method to get destination of the edge
-         *
          * @return dest
          */
         @Override
@@ -297,7 +292,6 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * method to get the weight of the edge
-         *
          * @return
          */
         @Override
@@ -307,7 +301,6 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * get info method
-         *
          * @return
          */
         @Override
@@ -317,7 +310,6 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * set info method
-         *
          * @param s
          */
         @Override
@@ -327,7 +319,6 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * get tag method. useful for algorithms
-         *
          * @return
          */
         @Override
@@ -337,7 +328,6 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * set tag method
-         *
          * @param t - the new value of the tag
          */
         @Override
@@ -362,7 +352,6 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * to string method
-         *
          * @return
          */
         @Override

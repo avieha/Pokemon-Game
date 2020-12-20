@@ -34,7 +34,6 @@ public class Arena {
         _agents=new ArrayList<CL_Agent>();
         _gg=new DWGraph_DS();
     }
-
     public void setPokemons(List<CL_Pokemon> f) {
         this._pokemons = f;
     }
@@ -121,6 +120,7 @@ public class Arena {
         if(dist>d1-EPS2) {ans = true;}
         return ans;
     }
+
     private static boolean isOnEdge(geo_location p, int s, int d, directed_weighted_graph g) {
         geo_location src = g.getNode(s).getLocation();
         geo_location dest = g.getNode(d).getLocation();

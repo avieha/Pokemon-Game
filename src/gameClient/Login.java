@@ -5,11 +5,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/** this class represents the Login screen at the
- *  beginning of the game, where client can enter id
- *  and desired level number
- */
-
 public class Login extends JFrame {
 
     private int level = -1;
@@ -36,18 +31,16 @@ public class Login extends JFrame {
         start.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(idText.getText().matches("[0-9]+")) {
-                    id = Integer.parseInt(idText.getText());
-                }
+                id = Integer.parseInt(idText.getText());
                 level = Integer.parseInt(levelText.getText());
-                if (String.valueOf(id).length() == 9 && id != 000000000) {
+                if (String.valueOf(id).length() == 9 && id != 000000000 && level >= 0 && level <= 23) {
                     a.setid(id);
                     a.setNum(level);
                     Thread client = new Thread(a);
                     client.start();
                     temp.setVisible(false);
                 } else
-                    JOptionPane.showMessageDialog(temp, "Invalid ID");
+                    JOptionPane.showMessageDialog(temp, "Invalid ID or Level Number");
             }
         });
     }
