@@ -3,6 +3,7 @@ package gameClient;
 import api.edge_data;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
+
 /** this class represents a pokemon object on the game,
  * including info as location,value and specific edge where it
  * stays.

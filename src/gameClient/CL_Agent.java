@@ -7,6 +7,7 @@ import api.node_data;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
 
+
 /** this class represents agent at the game, including id,
  * score,location on the graph,speed, current edge and
  * current node.
@@ -135,5 +136,4 @@ public class CL_Agent {
     public void setSpeed(double v) {
         this._speed = v;
     }
-
 }

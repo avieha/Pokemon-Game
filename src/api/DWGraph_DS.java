@@ -73,6 +73,8 @@ public class DWGraph_DS implements directed_weighted_graph {
         _nodesList.put(n.getKey(), n);
         _nodeSize++;
         _MC++;
+
+
     }
 
     /**
@@ -128,7 +130,6 @@ public class DWGraph_DS implements directed_weighted_graph {
         Collection<edge_data> edges = _out.get(node_id).values();
         return edges;
     }
-
     /**
      * method for removing a node
      * also remove all edges is connected to
@@ -158,7 +159,6 @@ public class DWGraph_DS implements directed_weighted_graph {
         _MC++;
         return _nodesList.remove(key);
     }
-
     /**
      * method for removing a node
      *
@@ -206,7 +206,6 @@ public class DWGraph_DS implements directed_weighted_graph {
     public int getMC() {
         return _MC;
     }
-
     /**
      * method to check if 2 graphs are equal
      *
@@ -345,7 +344,6 @@ public class DWGraph_DS implements directed_weighted_graph {
         public void setTag(int t) {
             _tag = t;
         }
-
         /**
          * method which check if 2 edges are equal
          *
@@ -360,7 +358,6 @@ public class DWGraph_DS implements directed_weighted_graph {
             return _src == edge._src &&
                     _dest == edge._dest &&
                     _weight == edge._weight;
-
         }
 
         /**

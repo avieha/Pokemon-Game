@@ -7,6 +7,7 @@ import api.geo_location;
 
 import java.io.Serializable;
 
+
 public class Point3D implements geo_location, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -63,16 +64,18 @@ public class Point3D implements geo_location, Serializable {
         double dx = this.x() - p2.x();
         double dy = this.y() - p2.y();
         double dz = this.z() - p2.z();
+
         double t = (dx * dx + dy * dy + dz * dz);
+
         return Math.sqrt(t);
     }
 
     public boolean equals(Object p) {
+
         if (p == null || !(p instanceof geo_location)) {
             return false;
         }
         Point3D p2 = (Point3D) p;
         return ((_x == p2._x) && (_y == p2._y) && (_z == p2._z));
     }
-
 }

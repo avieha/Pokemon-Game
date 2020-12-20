@@ -20,5 +20,4 @@ public class Range2Range {
         Point3D ans = _frame.fromPortion(d);
         return ans;
     }
-
 }
