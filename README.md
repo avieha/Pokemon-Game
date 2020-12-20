@@ -44,37 +44,30 @@ him and all the nodes he were connected to. the others reasons we used hashmap a
 and beacuase it also have the function value which let you convert the hasmap into a list with just a pointer in o(1)
 
 ## Algorithms
-* Kosaraju's- Following is Kosaraju’s BFS based simple algorithm
-that does two BFS traversals of graph:
+* Kosaraju's- We used it at the method isConnected, the algorithm run over the graph with a bfs traversal, reverse the graph, and then starts another BFS from the same node. 
+if all nodes were visited the graph is storngly connected.
+Time complexity of above implementation is same as Breadth First Search which is O(V+E).
 
- Time complexity:
- Time complexity of above implementation is same as Breadth First Search which is O(V+E).
-
-* Dijikstra- in this algorithm you use a priority queue with a comperator wich compare the weight of the edges and mantain the node with the shortest ptha in the top of the queue so at first you add the source node to the queue and then ron over a while loop antil the queue is empty. inside the loop you mark the top element as visited you remove him from queue and add all his not visited neighbors to the queue. Every node that get into the queue have the sum of the edges from source node to him in his Tag value.
-Thanks to the comparator the node with the minor sum will be in the top of the queue, that permit you to check if there is a shortest path which passes trough a node which is allready inside the queue and still didnt get marked as not visited,
-so after the queue get empty you check the destination node if his Tag was changes it mean this is the shortes path if he didnt get changed it is mean the src and dst node are not connected
-in the "shortestpath" I added an hashmap that when you add a neighbor you also put in the hashmap the node that was before the neighboore which were added
-that way you can check in the hashmap wich node was before the destination node and which was before this node and you can go like this until you get the src node so 
-that way you actually get the list of nodes which are the shortest path!
-  
+* Dijikstra- we used it in the shortestpath methods(both path and distance), the algortihm used a PriorityQueue with a comparator(by weight), and finds the shortest path/distance(more info on the project's wiki).
   
 ## Tests
-in the folder "tests" you can find 2 Junit classes the test all the methods in the DWGraph_Algo and all the methods in DWGraph_DS
-the tests checks simple methods like adding adding or removing a node to the complex methods like isconnected or shortestpath
-  
+in the folder "tests" you can find 3 Junit classes that test all the methods in the DWGraph_Algo and all the methods in DWGraph_DS,the tests checks simple methods like adding or removing a node to the complex methods like isconnected or shortestpath, there is also another test that checks the logic methods in Ex2, init and nextNodedist.
+
 ## Launch
 To run this project you need at first to Pull the file from the Git repository with the command :
 
 $ git clone https://github.com/avieha/ex2.git 
 
 then you have several options
-1) run the jar.
-to run the jar versiom you need to open your teminal and insert those commands
-java -jar ex2 <id number> <game level [0,23]
+1) run the ex2.jar file by double clicking on it.
+
+2) from CMD: open your terminal and insert those commands:
+$ java -jar ex2 <id number> <game level>
+(you can choose levels between 0-23)
 		
-2)from your java Development Environment.
+3) from your java Development Environment.
 you need to run the main program which is EX2
-after running the main you will see the login window there you will have to insert your id and the game level [0,23]
+after running the main you will see the login window there you will have to insert your id and the game level ([0,23])
 and the game will start.
 
 ## Sources
