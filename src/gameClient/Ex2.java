@@ -44,7 +44,7 @@ public class Ex2 implements Runnable {
     @Override
     public void run() {
         game_service game = Game_Server_Ex2.getServer(scnum); // you have [0,23] games
-        //game.login(id);
+        game.login(id);
         System.out.println("id: " + id + " level: " + scnum);
         String g = game.getGraph();
         try {
