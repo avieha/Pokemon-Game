@@ -5,7 +5,7 @@
 
 ## Table of contents
 * [General info](#general-info)
-* [Data structure](#data-strucure)
+* [Data structure](#data-structure)
 * [Algorithms](#algorithms)
 * [Tests](#tests)
 * [Launch](#launch)
@@ -31,8 +31,7 @@ or a list of all the neighboors of a specific node, and some more methods.
 -save- save a file of the graph in a Json form.. in this method we used the GSon library of google
 -load- load a saved Json file and create anew graph.  in this method we used the GSon library of google
 
-	
-## Data structure
+## Data Structure
 We decide to write this project using 3 Hasmaps. 1 for the nodes and 2 for the edges. the first hasmap of the edges is used to keep all the edges that come out
 from every node in the graph
 and the third hashmap is to keep for every node the edges the came to him. The reson we needed 2 hashamp for the edges is that you need to know for every node 
