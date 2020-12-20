@@ -12,7 +12,8 @@
 * [Sources](#sources)
 
 ## General info
-Directed Wighted Graph:
+
+### Directed Wighted Graph:
 a diredted weighted grap(dwg) is a graph made from nodes - |V| and edges = |E| 
 the classes which implemnt the dwg are int the folder "API" and they are:
 * NodeData- this class implemnts the interface of "node_data" and it represent the nodes in the graph.
@@ -30,6 +31,9 @@ or a list of all the neighboors of a specific node, and some more methods.
 -shortestpath- return a list of nodes of the shortest path 
 -save- save a file of the graph in a Json form.. in this method we used the GSon library of google
 -load- load a saved Json file and create anew graph.  in this method we used the GSon library of google
+
+### pokemon game
+in the pokemon game you have a number og agents upon a dwg and there are also a number of pokemons in the edges
 
 ## Data Structure
 We decide to write this project using 3 Hasmaps. 1 for the nodes and 2 for the edges. the first hasmap of the edges is used to keep all the edges that come out
