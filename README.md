@@ -14,7 +14,7 @@
 ## General info
 
 ### Directed Wighted Graph:
-a diredted weighted grap(dwg) is a graph made from nodes - |V| and edges = |E| 
+a directed weighted graph(dwg) is a graph made from nodes - |V| and edges = |E| 
 the classes which implemnt the dwg are int the folder "API" and they are:
 * NodeData- this class implemnts the interface of "node_data" and it represent the nodes in the graph.
 every node have a key, weight, info, tag and a location which is an inner class which implements the interface of "geo_location" wich represent a location of 3D.
@@ -33,7 +33,7 @@ or a list of all the neighboors of a specific node, and some more methods.
 -load- load a saved Json file and create anew graph.  in this method we used the GSon library of google
 
 ### pokemon game
-in the pokemon game you have a number og agents upon a dwg and there are also a number of pokemons in the edges
+in the pokemon game you have a number of agents upon a dwg and there are also a number of pokemons in the edges
 
 ## Data Structure
 We decide to write this project using 3 Hasmaps. 1 for the nodes and 2 for the edges. the first hasmap of the edges is used to keep all the edges that come out
@@ -46,18 +46,8 @@ and beacuase it also have the function value which let you convert the hasmap in
 ## Algorithms
 * Kosaraju's- Following is Kosaraju’s BFS based simple algorithm
 that does two BFS traversals of graph:
-1) Initialize all vertices as not visited.
-2) Do a BFS traversal of graph starting from 
-   any arbitrary vertex v. If BFS traversal 
-   doesn’t visit all vertices, then return false.
-3) Reverse all edges (or find transpose or reverse 
-   of graph)
-4) Mark all vertices as not visited in reversed graph.
-5) Again do a BFS traversal of reversed graph starting
-   from same vertex v (Same as step 2). If BFS traversal
-   doesn’t visit all vertices, then return false. 
-   Otherwise, return true.
-  Time complexity:
+
+ Time complexity:
  Time complexity of above implementation is same as Breadth First Search which is O(V+E).
 
 * Dijikstra- in this algorithm you use a priority queue with a comperator wich compare the weight of the edges and mantain the node with the shortest ptha in the top of the queue so at first you add the source node to the queue and then ron over a while loop antil the queue is empty. inside the loop you mark the top element as visited you remove him from queue and add all his not visited neighbors to the queue. Every node that get into the queue have the sum of the edges from source node to him in his Tag value.
