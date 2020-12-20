@@ -8,20 +8,48 @@ import com.google.gson.JsonObject;
 import java.io.*;
 import java.util.*;
 
+/**
+ * this class implements "dw_graph_algorithms" and its allows to take a DWGraph and make over it some manipulations
+ * like:
+ * 0. clone(); (copy)
+ * 1. init(graph);
+ * 2. isConnected(); // strongly (all ordered pais connected)
+ * 3. double shortestPathDist(int src, int dest);
+ * 4. List<node_data> shortestPath(int src, int dest);
+ * 5. Save(file); // JSON file
+ * 6. Load(file); // JSON file
+ */
 public class DWGraph_Algo implements dw_graph_algorithms {
 
     private directed_weighted_graph _graph;
 
+    /**
+     * this method init the DWGraph_algo over the received DWGraph so we can run all the function of this class over the graph
+     *
+     * @param g
+     */
     @Override
     public void init(directed_weighted_graph g) {
         _graph = g;
     }
 
+    /**
+     * this method return the graph we init
+     *
+     * @return
+     */
     @Override
     public directed_weighted_graph getGraph() {
         return _graph;
     }
 
+    /**
+     * this method make a deep copy of the graph
+     * at first this method create new nodes same as the nodes in the graph and
+     * after that it connect the nodes and make the same edges as the old graph
+     *
+     * @return
+     */
     @Override
     public directed_weighted_graph copy() {
         directed_weighted_graph copy = new DWGraph_DS();
@@ -40,6 +68,17 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return copy;
     }
 
+    /**
+     * this method check if the graph is strongly connected means that you can go from every node in graph to every
+     * other node
+     * in this method we choose one node and run the BFS algorithm to chek if the graph is connected
+     * if the graph is connected we make a new graph that is the inverse of the graph we used for the BFS
+     * it means we create the same graph with the same nodes but we reverse all the edges
+     * now we run the BFS again and if it is connected it is strongly connected
+     * more info in the Readme
+     *
+     * @return
+     */
     @Override
     public boolean isConnected() {
         if (this._graph == null)
@@ -68,7 +107,8 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         secondTime = recentNode.getKey();
         Queue<node_data> q = new LinkedList<node_data>();
         q.add(recentNode);
-        q.peek().setTag(1);
+        if (q.peek() != null)
+            q.peek().setTag(1);
         while (!q.isEmpty()) {
             Collection<edge_data> edges = this._graph.getE(q.peek().getKey());
             q.remove();
@@ -84,7 +124,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             if (node2.getTag() == 0)
                 return false;
         }
-        Collection<node_data> reversenodes = reverseGraph.getV();
         for (node_data x : secondt) {
             reverseGraph.getNode(x.getKey()).setTag(0);
         }
@@ -110,6 +149,17 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return true;
     }
 
+    /**
+     * this method return the shortest path between 2 selected nodes
+     * we use the dijkstra algorithm and the Vertex class
+     * we also use a comparator that compare the path we made from the src node untill
+     * this node. this comparator allows  to maintain the node with to shortest path in to top of the
+     * priority queue
+     *
+     * @param src  - start node
+     * @param dest - end (target) node
+     * @return
+     */
     @Override
     public double shortestPathDist(int src, int dest) {
         if (this._graph == null)
@@ -145,7 +195,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
                     double weightsum = x._edgeweight + _graph.getEdge(x.getkey(), neighbor.getDest()).getWeight();
                     if (weightsum < verlist.get(neighbor.getDest())._edgeweight) {
                         verlist.get(neighbor.getDest()).set_edgeweight(weightsum);
-                        // PrevNode.put(neighbor,x);
                         verlist.get(neighbor.getDest()).setPrevnode(x.getkey());
                         q.add(verlist.get(neighbor.getDest()));
                     }
@@ -160,6 +209,18 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     }
 
+    /**
+     * this method return a list of the shortest path between 2 nodes.
+     * this method is similar to the method above but in here we keep for every node
+     * the node which we came from this allows you to return a list of the shortest path
+     * we used for this method an hashmap wich keep for every node the node which was before him
+     * in that way we can go to the dest node and check wich node is before him and we can go like this until we get the
+     * src node then we juast need to reverse the list and we are done
+     *
+     * @param src  - start node
+     * @param dest - end (target) node
+     * @return
+     */
     @Override
     public List<node_data> shortestPath(int src, int dest) {
         List<node_data> pathlist = new LinkedList<node_data>();
@@ -217,6 +278,13 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return pathlist;
     }
 
+    /**
+     * method to save a graph in a file in a Json form using the Gson library
+     * we made a String of the graph and save it in a file
+     *
+     * @param file - the file name (may include a relative path).
+     * @return
+     */
     @Override
     public boolean save(String file) {
         Gson gson = new GsonBuilder().create();
@@ -254,6 +322,14 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
     }
 
+    /**
+     * this method load a graph from saved file
+     * all the deserializtion of the json object is made in a new class called
+     * "graph_Load"
+     *
+     * @param file - file name of JSON file
+     * @return
+     */
     @Override
     public boolean load(String file) {
         try {
@@ -269,30 +345,63 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
     }
 
+    /**
+     * inner class that attach a node with a double weight value
+     * to make easy the use of the dijkstra algorithm in the methods
+     * useful for maintain the shortest path from src to this node- vertex
+     * shortest path
+     */
     private static class vertex {
 
         node_data _node;
         double _edgeweight;
         int prevnode;
 
+        /**
+         * simple constructor
+         *
+         * @param node
+         */
         vertex(node_data node) {
             _node = node;
             _edgeweight = Integer.MAX_VALUE;
             prevnode = -1;
         }
 
+        /**
+         * get key of the node
+         *
+         * @return
+         */
         public int getkey() {
             return _node.getKey();
         }
 
+        /**
+         * set weight-
+         *
+         * @param w
+         */
         public void set_edgeweight(double w) {
             _edgeweight = w;
         }
 
+        /**
+         * this method is to keep to key of the node you  came from in the graph
+         *
+         * @param prevnode
+         */
         public void setPrevnode(int prevnode) {
             this.prevnode = prevnode;
         }
 
+        /**
+         * method that return a collection of the hashmap
+         * is useful to get the shortest path list
+         *
+         * @param t
+         * @return
+         */
         public HashMap<Integer, vertex> vertohash(Collection<node_data> t) {
             HashMap<Integer, vertex> list = new HashMap<>();
             for (node_data node_data : t) {

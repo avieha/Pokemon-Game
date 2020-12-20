@@ -6,6 +6,10 @@ import java.lang.reflect.Type;
 
 public class Graph_Load implements JsonDeserializer<directed_weighted_graph> {
 
+    /**
+     * this method takes json element and
+     * turns it into a directed weighted graph(DWGraph_DS Object)
+     */
     @Override
     public directed_weighted_graph deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         JsonObject jsonObject = jsonElement.getAsJsonObject();

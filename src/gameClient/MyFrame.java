@@ -14,24 +14,32 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * This class represents a very simple GUI class to present a
- * game on a graph - you are welcome to use this class - yet keep in mind
- * that the code is not well written in order to force you improve the
- * code and not to take it "as is".
+ * This class represents GUI class to present the
+ * pokemons game on a graph, with countdown & agents scores
+ * shown on the screen.
  */
 public class MyFrame extends JFrame {
 
-    private int _ind;
     private Arena _ar;
     private gameClient.util.Range2Range _w2f;
+    private JLabel time = new JLabel();
+    private long clock;
 
     public MyFrame(String a) {
         super(a);
-        int _ind = 0;
+        this.add(time);
     }
 
-    public void update(Arena ar) {
+    /**
+     * this methods initializes and keeps
+     * refreshing the frame with current time
+     * and graphic game status
+     * @param ar - Arena
+     * @param time - current time
+     */
+    public void update(Arena ar, long time) {
         this._ar = ar;
+        this.clock = time;
         updateFrame();
     }
 
@@ -53,7 +61,7 @@ public class MyFrame extends JFrame {
         drawGraph(g);
         drawAgants(g);
         drawInfo(g);
-
+        drawClock(g);
     }
 
     public void paint(Graphics g) {
@@ -69,6 +77,25 @@ public class MyFrame extends JFrame {
         // "Switch" the old "canvas" for the new one
         g.drawImage(buffer_image, 0, 0, this);
 
+    }
+
+    public void drawClock(Graphics g) {
+        String t = "Time to end: " + this.clock / 1000;
+        this.time = new JLabel(t);
+        double x = 0.035 * this.getHeight();
+        g.setFont(new Font("", Font.CENTER_BASELINE, (int) x));
+        g.setColor(Color.BLACK);
+        g.drawString(t, 45, 70);
+        List<CL_Agent> rs = _ar.getAgents();
+        String[] s = new String[rs.size()];
+        int i = 0;
+        for (CL_Agent r : rs) {
+            s[i] = "Agent " + r.getID() + ": " + r.getValue();
+            i++;
+        }
+        for (i = 0; i < rs.size(); i++) {
+            g.drawString(s[i], 45, 90 + (20 * i));
+        }
     }
 
     private void drawInfo(Graphics g) {
@@ -99,9 +126,7 @@ public class MyFrame extends JFrame {
         List<CL_Pokemon> fs = _ar.getPokemons();
         if (fs != null) {
             Iterator<CL_Pokemon> itr = fs.iterator();
-
             while (itr.hasNext()) {
-
                 CL_Pokemon f = itr.next();
                 Point3D c = f.getLocation();
                 int r = 10;
@@ -110,11 +135,8 @@ public class MyFrame extends JFrame {
                     g.setColor(Color.orange);
                 }
                 if (c != null) {
-
                     geo_location fp = this._w2f.world2frame(c);
                     g.fillOval((int) fp.x() - r, (int) fp.y() - r, 2 * r, 2 * r);
-                    //	g.drawString(""+n.getKey(), fp.ix(), fp.iy()-4*r);
-
                 }
             }
         }
@@ -122,18 +144,17 @@ public class MyFrame extends JFrame {
 
     private void drawAgants(Graphics g) {
         List<CL_Agent> rs = _ar.getAgents();
-        //	Iterator<OOP_Point3D> itr = rs.iterator();
         g.setColor(Color.red);
         int i = 0;
         while (rs != null && i < rs.size()) {
             geo_location c = rs.get(i).getLocation();
             int r = 8;
-            i++;
             if (c != null) {
-
                 geo_location fp = this._w2f.world2frame(c);
                 g.fillOval((int) fp.x() - r, (int) fp.y() - r, 2 * r, 2 * r);
+                g.drawString(""+rs.get(i).getValue(), (int)fp.x(), (int)fp.y()-4*r);
             }
+            i++;
         }
     }
 
@@ -141,6 +162,7 @@ public class MyFrame extends JFrame {
         geo_location pos = n.getLocation();
         geo_location fp = this._w2f.world2frame(pos);
         g.fillOval((int) fp.x() - r, (int) fp.y() - r, 2 * r, 2 * r);
+        g.setFont(new Font("", Font.BOLD, 16));
         g.drawString("" + n.getKey(), (int) fp.x(), (int) fp.y() - 4 * r);
     }
 
@@ -151,6 +173,5 @@ public class MyFrame extends JFrame {
         geo_location s0 = this._w2f.world2frame(s);
         geo_location d0 = this._w2f.world2frame(d);
         g.drawLine((int) s0.x(), (int) s0.y(), (int) d0.x(), (int) d0.y());
-        //	g.drawString(""+n.getKey(), fp.ix(), fp.iy()-4*r);
     }
 }
